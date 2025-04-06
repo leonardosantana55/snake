@@ -113,6 +113,7 @@ void Snake_Init(Snake *snake, Field *field){
     snake->max_size = 10;
     snake->speed = 3;
     snake->health = 1;
+    snake->motion_direction = RIGHT;
 
     snake->tile_x = field->tiles[1][30].x;    // the position of the snake depends on the coordinates of the field tiles
     snake->tile_y = field->tiles[1][30].y;
@@ -144,10 +145,10 @@ void Snake_Init(Snake *snake, Field *field){
 }
 
 
-void Snake_Move(Snake *snake, int direction){
+void Snake_Move(Snake *snake){
     //move the head of the snake and copy the previous tile to the old head position and so on
 
-    int colision = colisionDetection(snake->field, snake->tiles[0].x, snake->tiles[0].y, direction);
+    int colision = colisionDetection(snake->field, snake->tiles[0].x, snake->tiles[0].y, snake->motion_direction);
 
     if (colision == WALL){
         return;
@@ -156,7 +157,7 @@ void Snake_Move(Snake *snake, int direction){
     SDL_Rect temp_pre = snake->tiles[1];
     SDL_Rect temp = snake->tiles[0];
 
-    switch(direction){
+    switch(snake->motion_direction){
         //TODO: add colision detection
 
         case RIGHT:

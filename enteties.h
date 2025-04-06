@@ -44,6 +44,7 @@ typedef struct Snake_{
     int max_size;
     int speed;
     int health;
+    int motion_direction;
 
     int tile_x; // starting position
     int tile_y; // starting position
@@ -76,7 +77,7 @@ void Field_Update(Field *field);
 
 void Snake_Init(Snake *snake, Field *field);
 
-void Snake_Move(Snake *snake, int direction);
+void Snake_Move(Snake *snake);
 
 void Wall_Init(Wall *wall, Field *field, int size, int start_x, int start_y, int orientation);
 

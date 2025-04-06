@@ -29,8 +29,9 @@
 #include <SDL2/SDL_ttf.h>
 #include <math.h>
 
-#include "enteties.h" //change to ententies.H
+#include "enteties.h"
 #include "utils.h"
+#include "events.h"
 
 // its a breeze building this program on linux or windows 
 #ifdef _WIN32
@@ -137,19 +138,19 @@ bool loadMedia(char* file_path, SDL_Surface** surface){
 }
 
 
-void eventLogicQuit(SDL_Event* e, bool* quit){
-    if(e->type == SDL_QUIT){
-        *quit = true;
-    }
-
-}
-
-
-void eventLogicKeyPrint(SDL_Event* e){
-    if(e->type == SDL_TEXTINPUT){
-        printf("%s\n", e->text.text);
-    }
-}
+//void eventLogicQuit(SDL_Event* e, bool* quit){
+//    if(e->type == SDL_QUIT){
+//        *quit = true;
+//    }
+//
+//}
+//
+//
+//void eventLogicKeyPrint(SDL_Event* e){
+//    if(e->type == SDL_TEXTINPUT){
+//        printf("%s\n", e->text.text);
+//    }
+//}
 
 
 void closeSDL(){
@@ -251,9 +252,10 @@ int XMAIN(){
     }
     Fps_Init(fps);
 
-    int control = 0; // quick hack
+    // quick hack section
+    int control = 0;
     bool prin = false;
-
+    snake->motion_direction = DOWN;
 
     // main loop
     bool quit = false;
@@ -263,13 +265,15 @@ int XMAIN(){
 
         // event logic loop
         while(SDL_PollEvent(&e)){
+
+            eventLogicMoveSnake(&e, snake);
             eventLogicQuit(&e, &quit);
             eventLogicKeyPrint(&e);
         }
 
         //game logic
         if(control > 10){
-            Snake_Move(snake, DOWN);
+            Snake_Move(snake);
             control = 0;
             prin = true;
 
