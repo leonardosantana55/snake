@@ -111,7 +111,8 @@ void Snake_Init(Snake *snake, Field *field){
 
     snake->size = 3;
     snake->max_size = 10;
-    snake->speed = 3;
+    snake->speed = 60 / 10;              // the speed(tile per second) is the divisor. the dividend is 60 because we ropefully are running at 60fps
+    snake->speed_control = 0;
     snake->health = 1;
     snake->motion_direction = RIGHT;
 
@@ -148,44 +149,57 @@ void Snake_Init(Snake *snake, Field *field){
 void Snake_Move(Snake *snake){
     //move the head of the snake and copy the previous tile to the old head position and so on
 
-    int colision = colisionDetection(snake->field, snake->tiles[0].x, snake->tiles[0].y, snake->motion_direction);
 
-    if (colision == WALL){
-        return;
+    if (snake->speed_control > snake->speed){
+
+        int colision = colisionDetection(snake->field, snake->tiles[0].x, snake->tiles[0].y, snake->motion_direction);
+
+        if (colision == WALL){
+            return;
+        }
+
+
+
+
+        SDL_Rect temp_pre = snake->tiles[1];
+        SDL_Rect temp = snake->tiles[0];
+
+        switch(snake->motion_direction){
+            //TODO: add colision detection
+
+            case RIGHT:
+                snake->tiles[0].x += snake->tile_w;
+                break;
+
+            case DOWN:
+                snake->tiles[0].y += snake->tile_h;
+                break;
+
+            case LEFT:
+                snake->tiles[0].x -= snake->tile_w;
+                break;
+
+            case UP:
+                snake->tiles[0].y -= snake->tile_h;
+                break;
+
+        }
+
+        //for loop starts on 1 because the head has moved already
+        for(int i=1; i<snake->size; i++){
+
+            temp_pre = snake->tiles[i];
+            snake->tiles[i] = temp;
+            temp = temp_pre;
+            temp_pre = snake->tiles[i+1];
+
+        }
+
+        snake->speed_control = 0;
     }
+    else{
 
-    SDL_Rect temp_pre = snake->tiles[1];
-    SDL_Rect temp = snake->tiles[0];
-
-    switch(snake->motion_direction){
-        //TODO: add colision detection
-
-        case RIGHT:
-            snake->tiles[0].x += snake->tile_w;
-            break;
-
-        case DOWN:
-            snake->tiles[0].y += snake->tile_h;
-            break;
-
-        case LEFT:
-            snake->tiles[0].x -= snake->tile_w;
-            break;
-
-        case UP:
-            snake->tiles[0].y -= snake->tile_h;
-            break;
-
-    }
-
-    //for loop starts on 1 because the head has moved already
-    for(int i=1; i<snake->size; i++){
-
-        temp_pre = snake->tiles[i];
-        snake->tiles[i] = temp;
-        temp = temp_pre;
-        temp_pre = snake->tiles[i+1];
-
+        snake->speed_control++;
     }
 }
 

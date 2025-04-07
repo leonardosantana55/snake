@@ -252,10 +252,12 @@ int XMAIN(){
     }
     Fps_Init(fps);
 
+
     // quick hack section
     int control = 0;
     bool prin = false;
     snake->motion_direction = DOWN;
+
 
     // main loop
     bool quit = false;
@@ -272,32 +274,9 @@ int XMAIN(){
         }
 
         //game logic
-        if(control > 10){
-            Snake_Move(snake);
-            control = 0;
-            prin = true;
 
-        }
-        else{
-            control++;
-        }
-
+        Snake_Move(snake);
         Field_Update(field);
-
-        if(prin){
-
-            for(int i=0; i<field->size_x; i++){
-                for(int j=0; j<field->size_y; j++){
-
-                   printf("%d ", field->on_tile[i][j]);
-
-                }
-                printf("\n");
-            }
-            printf("\n");
-            prin = false;
-
-        }
 
 
         //Clear screen
@@ -331,4 +310,28 @@ int XMAIN(){
 //colorscheme
 //random position food generator
 //control logic
+//snakes speed
+
+
+// control how many loops it takes to make a move
+// but i want to make it positive
+// maybe in the function move? i mean, if im gona move, i should heck at what speed im going
+//maybe i should check how many frames per second in generating and ,lets say it is 60fps
+//then i would take 60 / snake->speed = 3 if control = 
+
+
+
+//        if(prin){
 //
+//            for(int i=0; i<field->size_x; i++){
+//                for(int j=0; j<field->size_y; j++){
+//
+//                   printf("%d ", field->on_tile[i][j]);
+//
+//                }
+//                printf("\n");
+//            }
+//            printf("\n");
+//            prin = false;
+//
+//        }

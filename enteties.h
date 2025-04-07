@@ -43,6 +43,7 @@ typedef struct Snake_{
     int size;
     int max_size;
     int speed;
+    int speed_control;
     int health;
     int motion_direction;
 
