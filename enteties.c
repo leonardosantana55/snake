@@ -111,7 +111,7 @@ void Snake_Init(Snake *snake, Field *field){
 
     snake->size = 3;
     snake->max_size = 10;
-    snake->speed = 60 / 10;              // the speed(tile per second) is the divisor. the dividend is 60 because we ropefully are running at 60fps
+    snake->speed = 60 / 20;              // the speed(tile per second) is the divisor. the dividend is 60 because we ropefully are running at 60fps
     snake->speed_control = 0;
     snake->health = 1;
     snake->motion_direction = RIGHT;

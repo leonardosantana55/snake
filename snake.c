@@ -179,9 +179,9 @@ void renderField(Field *field){
     
     for(int i=0; i<field->size_x; i++){
         for(int j=0; j<field->size_y; j++){
-            SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+            SDL_SetRenderDrawColor(gRenderer, 255/8, 255/8, 255/8, 255/8);
             SDL_RenderFillRect(gRenderer, &field->tiles[i][j]);
-            SDL_SetRenderDrawColor(gRenderer, 0xF0, 0xF0, 0xF0, 0xF0);
+            SDL_SetRenderDrawColor(gRenderer, 255/255, 255/255, 255/255, 255/255);
             SDL_RenderDrawRect(gRenderer, &field->tiles[i][j]);
         }
     }
@@ -192,9 +192,9 @@ void renderField(Field *field){
 void renderSnake(Snake *snake){
 
     for(int i=0; i<snake->size; i++){
-        SDL_SetRenderDrawColor(gRenderer, 0x50, 0x50, 0x50, 0x50);
+        SDL_SetRenderDrawColor(gRenderer, 255/4, 255/4, 255/4, 255/4);
         SDL_RenderFillRect(gRenderer, &snake->tiles[i]);
-        SDL_SetRenderDrawColor(gRenderer, 0xF0, 0xF0, 0xF0, 0xF0);
+        SDL_SetRenderDrawColor(gRenderer, 255/255, 255/255, 255/255, 255/255);
         SDL_RenderDrawRect(gRenderer, &snake->tiles[i]);
     }
 }
@@ -205,9 +205,9 @@ void renderWall(Wall *wall[], int size){
     for(int i=0; i<size; i++){
         for(int j=0; j<wall[i]->size; j++){
 
-            SDL_SetRenderDrawColor(gRenderer, 0x90, 0x30, 0xF0, 0xF0);
+            SDL_SetRenderDrawColor(gRenderer, 255/2, 255/2, 255/2, 255/2);
             SDL_RenderFillRect(gRenderer, &wall[i]->tiles[j]);
-            SDL_SetRenderDrawColor(gRenderer, 0xF0, 0xF0, 0xF0, 0xF0);
+            SDL_SetRenderDrawColor(gRenderer, 255/255, 255/255, 255/255, 255/255);
             SDL_RenderDrawRect(gRenderer, &wall[i]->tiles[j]);
 
         }
@@ -254,8 +254,8 @@ int XMAIN(){
 
 
     // quick hack section
-    int control = 0;
-    bool prin = false;
+//    int control = 0;
+//    bool prin = false;
     snake->motion_direction = DOWN;
 
 
