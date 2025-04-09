@@ -42,8 +42,8 @@
 
 
 //Global variables
-const int SCREEN_WIDTH = 600;
-const int SCREEN_HEIGHT = 600;
+const int SCREEN_WIDTH = 256;
+const int SCREEN_HEIGHT = 256;
 SDL_Window* gWindow = NULL;
 SDL_Surface* gWindow_surface = NULL;
 SDL_Renderer* gRenderer = NULL;
@@ -212,7 +212,7 @@ int XMAIN(){
     if(field == NULL){
         return -1;
     }
-    Field_Init(field, 32, 32);
+    Field_Init(field, SCREEN_WIDTH/8, SCREEN_HEIGHT/8);
 
     Snake *snake = (Snake *)malloc(sizeof(Field));
     if(snake == NULL){
