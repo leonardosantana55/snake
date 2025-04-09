@@ -3,7 +3,7 @@
 
 void Field_Init(Field *field, int size_x, int size_y){
 
-    field->size_x = size_x;
+    field->size_x = size_x;             //how many tiles the field has in each direction
     field->size_y = size_y;
 
     field->tile_x = 0; //starting position
