@@ -138,21 +138,6 @@ bool loadMedia(char* file_path, SDL_Surface** surface){
 }
 
 
-//void eventLogicQuit(SDL_Event* e, bool* quit){
-//    if(e->type == SDL_QUIT){
-//        *quit = true;
-//    }
-//
-//}
-//
-//
-//void eventLogicKeyPrint(SDL_Event* e){
-//    if(e->type == SDL_TEXTINPUT){
-//        printf("%s\n", e->text.text);
-//    }
-//}
-
-
 void closeSDL(){
     //Dealocate Surface
     SDL_FreeSurface(gWindow_surface);
@@ -214,6 +199,8 @@ void renderWall(Wall *wall[], int size){
     }
 }
 
+enum Game_state {START_SCREEN, GAME_START, GAME_OVER, RECORD_SCREEN};
+
 
 int XMAIN(){
     initSDL();
@@ -256,38 +243,50 @@ int XMAIN(){
     // quick hack section
 //    int control = 0;
 //    bool prin = false;
-    snake->motion_direction = DOWN;
-
 
     // main loop
     bool quit = false;
+    int game_state = GAME_START;
     while(!quit){
+
         fps->time_start = SDL_GetTicks();
 
+        switch(game_state){
 
-        // event logic loop
-        while(SDL_PollEvent(&e)){
+            case GAME_START:
 
-            eventLogicMoveSnake(&e, snake);
-            eventLogicQuit(&e, &quit);
-            eventLogicKeyPrint(&e);
+                // event logic loop
+                while(SDL_PollEvent(&e)){
+
+                    eventLogicMoveSnake(&e, snake);
+                    eventLogicQuit(&e, &quit);
+                    eventLogicKeyPrint(&e);
+                }
+
+                //game logic
+
+                Snake_Move(snake);
+                Field_Update(field);
+                if(snake->health == 0){
+                    game_state = GAME_OVER;
+                }
+
+
+                //Clear screen
+                SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0x00 );
+                SDL_RenderClear( gRenderer );
+
+
+                // render game elements
+                renderField(field);
+                renderSnake(snake);
+                renderWall(outside_walls, 4);
+                break;
+
+            case GAME_OVER:
+                printf("GAME OVER!\n");
+                break;
         }
-
-        //game logic
-
-        Snake_Move(snake);
-        Field_Update(field);
-
-
-        //Clear screen
-        SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0x00 );
-        SDL_RenderClear( gRenderer );
-
-
-        // render game elements
-        renderField(field);
-        renderSnake(snake);
-        renderWall(outside_walls, 4);
 
 
         //Update screen
@@ -306,19 +305,16 @@ int XMAIN(){
     return 0;
 }
 
-//TODO: colision detection
+//TODO:
+//color blink effect
+//
 //colorscheme
 //random position food generator
 //control logic
 //snakes speed
-
-
-// control how many loops it takes to make a move
-// but i want to make it positive
-// maybe in the function move? i mean, if im gona move, i should heck at what speed im going
-//maybe i should check how many frames per second in generating and ,lets say it is 60fps
-//then i would take 60 / snake->speed = 3 if control = 
-
+//scoring system
+//game state
+//colision logic
 
 
 //        if(prin){

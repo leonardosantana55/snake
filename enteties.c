@@ -8,8 +8,8 @@ void Field_Init(Field *field, int size_x, int size_y){
 
     field->tile_x = 0; //starting position
     field->tile_y = 0; //starting position
-    field->tile_w = 16;
-    field->tile_h = 16;
+    field->tile_w = 8;
+    field->tile_h = 8;
     SDL_Rect a1 = {
         field->tile_x - field->tile_w, 
         field->tile_y - field->tile_h, 
@@ -116,8 +116,8 @@ void Snake_Init(Snake *snake, Field *field){
     snake->health = 1;
     snake->motion_direction = RIGHT;
 
-    snake->tile_x = field->tiles[1][30].x;    // the position of the snake depends on the coordinates of the field tiles
-    snake->tile_y = field->tiles[1][30].y;
+    snake->tile_x = field->tiles[field->size_x/2][field->size_x/2].x;    // the position of the snake depends on the coordinates of the field tiles
+    snake->tile_y = field->tiles[field->size_y/2][field->size_y/2].y;
     snake->tile_w = field->tile_w;
     snake->tile_h = field->tile_h;
 
@@ -154,11 +154,16 @@ void Snake_Move(Snake *snake){
 
         int colision = colisionDetection(snake->field, snake->tiles[0].x, snake->tiles[0].y, snake->motion_direction);
 
-        if (colision == WALL){
-            return;
+        switch(colision){
+
+            case WALL:
+                snake->health = 0;
+                return;
+
+            case FOOD:
+                snake->size++;
+                break;
         }
-
-
 
 
         SDL_Rect temp_pre = snake->tiles[1];
@@ -258,37 +263,11 @@ void Wall_Init(Wall *wall, Field *field, int size, int start_x, int start_y, int
 
 int colisionDetection(Field *field, int x, int y, int direction){
     //gets x y pixel and uses division to get the a b index
+    //hopefully when i pass NULL as the direction param the default will wun on the switch case
     int a = 0;
     int b = 0;
 
     switch(direction){
-
-//        case RIGHT:
-//            a = (x + field->tile_w) / field->tile_w;
-//            b = y / field->tile_w;
-//            break;
-//
-//        case DOWN:
-//            a = x / field->tile_h;
-//            b = (y + field->tile_h) / field->tile_w;
-//            break;
-//
-//        case LEFT:
-//            a = (x - field->tile_w) / field->tile_h;
-//            b = y / field->tile_w;
-//            break;
-//
-//        case UP:
-//            snake->tiles[0].y -= snake->tile_h;
-//            a = x / field->tile_h;
-//            b = (y - field->tile_h) / field->tile_h;
-//            break;
-//
-//        default:
-//            a = x / field->tile_h;
-//            b = y / field->tile_w;
-//            break;
-//    }
 
         case RIGHT:
             a = (x / field->tile_h) + 1;

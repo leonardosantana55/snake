@@ -1,6 +1,7 @@
 #ifndef UTILS
 #define UTILS
 
+
 typedef struct Fps_{
     
     Uint32 time_start;
