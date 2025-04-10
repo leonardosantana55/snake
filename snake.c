@@ -212,7 +212,7 @@ int XMAIN(){
     if(field == NULL){
         return -1;
     }
-    Field_Init(field, SCREEN_WIDTH/8, SCREEN_HEIGHT/8);
+    Field_Init(field, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     Snake *snake = (Snake *)malloc(sizeof(Field));
     if(snake == NULL){
@@ -331,3 +331,49 @@ int XMAIN(){
 //            prin = false;
 //
 //        }
+//
+//
+//
+//
+//
+//    if (TTF_Init() == -1) {
+//        printf("TTF_Init Error: %s\n", TTF_GetError());
+//        SDL_Quit();
+//        return 1;
+//    }
+//
+//
+//
+//
+//
+//    TTF_Font* font = TTF_OpenFont("path/to/your/font.ttf", 24);
+//    if (font == NULL) {
+//        printf("TTF_OpenFont Error: %s\n", TTF_GetError());
+//        return 1;
+//    }
+//
+//SDL_Surface* surface = TTF_RenderText_Solid(font, "Hello, SDL2 TTF!", color);
+//
+//
+//
+//    if (surface == NULL) {
+//        printf("TTF_RenderText_Solid Error: %s\n", TTF_GetError());
+//        return 1;
+//    }
+//
+//
+//
+//
+//
+//    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+//
+//
+//
+//
+//
+//    SDL_Rect dstrect = {100, 100, 0, 0};
+//    SDL_QueryTexture(texture, NULL, NULL, &dstrect.w, &dstrect.h);
+//
+//    SDL_RenderClear(renderer);
+//    SDL_RenderCopy(renderer, texture, NULL, &dstrect);
+//    SDL_RenderPresent(renderer);

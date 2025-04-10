@@ -3,13 +3,15 @@
 
 void Field_Init(Field *field, int size_x, int size_y){
 
-    field->size_x = size_x;             //how many tiles the field has in each direction
-    field->size_y = size_y;
 
     field->tile_x = 0; //starting position
     field->tile_y = 0; //starting position
-    field->tile_w = 8;
-    field->tile_h = 8;
+    field->tile_w = 4;
+    field->tile_h = 4;
+
+    field->size_x = size_x / field->tile_w;             //how many tiles the field has in each direction
+    field->size_y = size_y / field->tile_h;
+
     SDL_Rect a1 = {
         field->tile_x - field->tile_w, 
         field->tile_y - field->tile_h, 
@@ -17,8 +19,8 @@ void Field_Init(Field *field, int size_x, int size_y){
         field->tile_h
         };
 
-    for(int i=0; i<size_x; i++){
-        for(int j=0; j<size_y; j++){
+    for(int i=0; i<field->size_x; i++){
+        for(int j=0; j<field->size_y; j++){
 
             field->tiles[i][j].x = a1.x + (a1.w * (j+1));
             field->tiles[i][j].y = a1.y + (a1.h * (i+1));
