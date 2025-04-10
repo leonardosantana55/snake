@@ -227,10 +227,10 @@ int XMAIN(){
             return -1;
         }
     }
-    Wall_Init(outside_walls[0], field, 32, 0, 0, HORIZONTAL);
-    Wall_Init(outside_walls[1], field, 32, 0, 31, HORIZONTAL);
-    Wall_Init(outside_walls[2], field, 32, 0, 0, VERTICAL);
-    Wall_Init(outside_walls[3], field, 32, 31, 0, VERTICAL);
+    Wall_Init(outside_walls[0], field, field->size_x, 0, 0, HORIZONTAL);
+    Wall_Init(outside_walls[1], field, field->size_x, 0, 31, HORIZONTAL);
+    Wall_Init(outside_walls[2], field, field->size_y, 0, 0, VERTICAL);
+    Wall_Init(outside_walls[3], field, field->size_y, 31, 0, VERTICAL);
 
     //init game utils
     Fps *fps = (Fps *)malloc(sizeof(Fps));
@@ -315,6 +315,7 @@ int XMAIN(){
 //scoring system
 //game state
 //colision logic
+//change field->size_x to field->ntiles_x;
 
 
 //        if(prin){
