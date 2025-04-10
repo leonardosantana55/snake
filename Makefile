@@ -15,7 +15,7 @@ CC=gcc
 #CFLAGS=-g -D__USE_FIXED_PROTOTYPES__ -ansi
 # OBJS: All the files to be compiled:
 OBJS=snake.c enteties.c utils.c events.c
-LINKER_FLAGS=-lSDL2 -lSDL2_image -Wall
+LINKER_FLAGS=-lSDL2 -lSDL2_image -Wall -lSDL2_ttf
 LIBRARY_PATHS =-LC:\Users\XQ6460\Downloads\c\mingw64\x86_64-w64-mingw32\lib
 OBJ_NAME=prog
 

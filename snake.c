@@ -84,6 +84,13 @@ bool initSDL(){
         }
     }
 
+    //Initialize SDL_ttf
+    if( TTF_Init() == -1 )
+    {
+        printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+        success = false;
+    }
+
     return success;
 }
 
@@ -199,6 +206,8 @@ void renderWall(Wall *wall[], int size){
     }
 }
 
+
+
 enum Game_state {START_SCREEN, GAME_START, GAME_OVER, RECORD_SCREEN};
 
 
@@ -239,6 +248,24 @@ int XMAIN(){
     }
     Fps_Init(fps);
 
+    //init font
+    TTF_Font* font = TTF_OpenFont("assets/font/poxel/poxel-font.ttf", 24);
+    if (font == NULL) {
+        printf("TTF_OpenFont Error: %s\n", TTF_GetError());
+        return 1;
+    }
+
+    SDL_Color color = {255,255,255,255};
+    SDL_Surface* surface = TTF_RenderText_Solid(font, "Hello, SDL2 TTF!", color);
+    if (surface == NULL) {
+        printf("TTF_RenderText_Solid Error: %s\n", TTF_GetError());
+        return 1;
+    }
+
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(gRenderer, surface);
+
+    SDL_Rect dstrect = {100, 100, 0, 0};
+    SDL_QueryTexture(texture, NULL, NULL, &dstrect.w, &dstrect.h);
 
     // quick hack section
 //    int control = 0;
@@ -281,6 +308,7 @@ int XMAIN(){
                 renderField(field);
                 renderSnake(snake);
                 renderWall(outside_walls, 4);
+                SDL_RenderCopy(gRenderer, texture, NULL, &dstrect);
                 break;
 
             case GAME_OVER:
@@ -355,9 +383,6 @@ int XMAIN(){
 //    }
 //
 //SDL_Surface* surface = TTF_RenderText_Solid(font, "Hello, SDL2 TTF!", color);
-//
-//
-//
 //    if (surface == NULL) {
 //        printf("TTF_RenderText_Solid Error: %s\n", TTF_GetError());
 //        return 1;
