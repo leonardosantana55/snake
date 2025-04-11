@@ -6,8 +6,8 @@ void Field_Init(Field *field, int size_x, int size_y){
 
     field->tile_x = 0; //starting position
     field->tile_y = 0; //starting position
-    field->tile_w = 4;
-    field->tile_h = 4;
+    field->tile_w = 16;
+    field->tile_h = 16;
 
     field->size_x = size_x / field->tile_w;             //how many tiles the field has in each direction
     field->size_y = size_y / field->tile_h;

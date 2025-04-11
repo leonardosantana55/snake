@@ -42,8 +42,8 @@
 
 
 //Global variables
-const int SCREEN_WIDTH = 256;
-const int SCREEN_HEIGHT = 256;
+const int SCREEN_WIDTH = 1024;
+const int SCREEN_HEIGHT = 1024;
 SDL_Window* gWindow = NULL;
 SDL_Surface* gWindow_surface = NULL;
 SDL_Renderer* gRenderer = NULL;
@@ -207,6 +207,25 @@ void renderWall(Wall *wall[], int size){
 }
 
 
+int renderText(TTF_Font *font, const char *text){
+    
+    SDL_Color color = {255,255,255,255};
+    SDL_Surface* surface = TTF_RenderText_Solid(font, text, color);
+    if (surface == NULL) {
+        printf("TTF_RenderText_Solid Error: %s\n", TTF_GetError());
+        return 1;
+    }
+
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(gRenderer, surface);
+
+    SDL_Rect dstrect = {100, 100, 0, 0};
+    SDL_QueryTexture(texture, NULL, NULL, &dstrect.w, &dstrect.h);
+    SDL_RenderCopy(gRenderer, texture, NULL, &dstrect);
+
+    return 0;
+}
+
+
 
 enum Game_state {START_SCREEN, GAME_START, GAME_OVER, RECORD_SCREEN};
 
@@ -255,17 +274,6 @@ int XMAIN(){
         return 1;
     }
 
-    SDL_Color color = {255,255,255,255};
-    SDL_Surface* surface = TTF_RenderText_Solid(font, "Hello, SDL2 TTF!", color);
-    if (surface == NULL) {
-        printf("TTF_RenderText_Solid Error: %s\n", TTF_GetError());
-        return 1;
-    }
-
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(gRenderer, surface);
-
-    SDL_Rect dstrect = {100, 100, 0, 0};
-    SDL_QueryTexture(texture, NULL, NULL, &dstrect.w, &dstrect.h);
 
     // quick hack section
 //    int control = 0;
@@ -274,8 +282,12 @@ int XMAIN(){
     // main loop
     bool quit = false;
     int game_state = GAME_START;
+
+    char fps_string[5];
+
     while(!quit){
 
+        sprintf(fps_string, "%.2f", fps->fps);    // updates fps_string
         fps->time_start = SDL_GetTicks();
 
         switch(game_state){
@@ -308,7 +320,7 @@ int XMAIN(){
                 renderField(field);
                 renderSnake(snake);
                 renderWall(outside_walls, 4);
-                SDL_RenderCopy(gRenderer, texture, NULL, &dstrect);
+                renderText(font, fps_string);
                 break;
 
             case GAME_OVER:
@@ -345,7 +357,6 @@ int XMAIN(){
 //game state
 //colision logic
 //change field->size_x to field->ntiles_x;
-
 //add some functionability that makes use of exponential back factor: {initial delay} * (2 ^ ({current attempt number} - 1)) = backoff factor
 
 
@@ -363,46 +374,3 @@ int XMAIN(){
 //            prin = false;
 //
 //        }
-//
-//
-//
-//
-//
-//    if (TTF_Init() == -1) {
-//        printf("TTF_Init Error: %s\n", TTF_GetError());
-//        SDL_Quit();
-//        return 1;
-//    }
-//
-//
-//
-//
-//
-//    TTF_Font* font = TTF_OpenFont("path/to/your/font.ttf", 24);
-//    if (font == NULL) {
-//        printf("TTF_OpenFont Error: %s\n", TTF_GetError());
-//        return 1;
-//    }
-//
-//SDL_Surface* surface = TTF_RenderText_Solid(font, "Hello, SDL2 TTF!", color);
-//    if (surface == NULL) {
-//        printf("TTF_RenderText_Solid Error: %s\n", TTF_GetError());
-//        return 1;
-//    }
-//
-//
-//
-//
-//
-//    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-//
-//
-//
-//
-//
-//    SDL_Rect dstrect = {100, 100, 0, 0};
-//    SDL_QueryTexture(texture, NULL, NULL, &dstrect.w, &dstrect.h);
-//
-//    SDL_RenderClear(renderer);
-//    SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-//    SDL_RenderPresent(renderer);
