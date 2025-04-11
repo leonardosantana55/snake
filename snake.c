@@ -346,6 +346,8 @@ int XMAIN(){
 //colision logic
 //change field->size_x to field->ntiles_x;
 
+//add some functionability that makes use of exponential back factor: {initial delay} * (2 ^ ({current attempt number} - 1)) = backoff factor
+
 
 //        if(prin){
 //
