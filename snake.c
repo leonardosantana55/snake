@@ -32,6 +32,7 @@
 #include "enteties.h"
 #include "utils.h"
 #include "events.h"
+#include "render.h"
 
 // its a breeze building this program on linux or windows 
 #ifdef _WIN32
@@ -167,64 +168,53 @@ void closeSDL(){
 }
 
 
-void renderField(Field *field){
-    
-    for(int i=0; i<field->size_x; i++){
-        for(int j=0; j<field->size_y; j++){
-            SDL_SetRenderDrawColor(gRenderer, 255/8, 255/8, 255/8, 255/8);
-            SDL_RenderFillRect(gRenderer, &field->tiles[i][j]);
-            SDL_SetRenderDrawColor(gRenderer, 255/255, 255/255, 255/255, 255/255);
-            SDL_RenderDrawRect(gRenderer, &field->tiles[i][j]);
-        }
-    }
 
-}
+//void renderSnake(Snake *snake){
+//
+//    for(int i=0; i<snake->size; i++){
+//        SDL_SetRenderDrawColor(gRenderer, 255/4, 255/4, 255/4, 255/4);
+//        SDL_RenderFillRect(gRenderer, &snake->tiles[i]);
+//        SDL_SetRenderDrawColor(gRenderer, 255/255, 255/255, 255/255, 255/255);
+//        SDL_RenderDrawRect(gRenderer, &snake->tiles[i]);
+//    }
+//}
 
-
-void renderSnake(Snake *snake){
-
-    for(int i=0; i<snake->size; i++){
-        SDL_SetRenderDrawColor(gRenderer, 255/4, 255/4, 255/4, 255/4);
-        SDL_RenderFillRect(gRenderer, &snake->tiles[i]);
-        SDL_SetRenderDrawColor(gRenderer, 255/255, 255/255, 255/255, 255/255);
-        SDL_RenderDrawRect(gRenderer, &snake->tiles[i]);
-    }
-}
-
-
-void renderWall(Wall *wall[], int size){
-
-    for(int i=0; i<size; i++){
-        for(int j=0; j<wall[i]->size; j++){
-
-            SDL_SetRenderDrawColor(gRenderer, 255/2, 255/2, 255/2, 255/2);
-            SDL_RenderFillRect(gRenderer, &wall[i]->tiles[j]);
-            SDL_SetRenderDrawColor(gRenderer, 255/255, 255/255, 255/255, 255/255);
-            SDL_RenderDrawRect(gRenderer, &wall[i]->tiles[j]);
-
-        }
-    }
-}
-
-
-int renderText(TTF_Font *font, const char *text){
-    
-    SDL_Color color = {255,255,255,255};
-    SDL_Surface* surface = TTF_RenderText_Solid(font, text, color);
-    if (surface == NULL) {
-        printf("TTF_RenderText_Solid Error: %s\n", TTF_GetError());
-        return 1;
-    }
-
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(gRenderer, surface);
-
-    SDL_Rect dstrect = {100, 100, 0, 0};
-    SDL_QueryTexture(texture, NULL, NULL, &dstrect.w, &dstrect.h);
-    SDL_RenderCopy(gRenderer, texture, NULL, &dstrect);
-
-    return 0;
-}
-
+//
+//void renderWall(Wall *wall[], int size){
+//
+//    for(int i=0; i<size; i++){
+//        for(int j=0; j<wall[i]->size; j++){
+//
+//            SDL_SetRenderDrawColor(gRenderer, 255/2, 255/2, 255/2, 255/2);
+//            SDL_RenderFillRect(gRenderer, &wall[i]->tiles[j]);
+//            SDL_SetRenderDrawColor(gRenderer, 255/255, 255/255, 255/255, 255/255);
+//            SDL_RenderDrawRect(gRenderer, &wall[i]->tiles[j]);
+//
+//        }
+//    }
+//}
+//
+//
+//int renderText(TTF_Font *font, const char *text){
+//    
+//    SDL_Color color = {255,255,255,255};
+//    SDL_Surface* surface = TTF_RenderText_Solid(font, text, color);
+//    if (surface == NULL) {
+//        printf("TTF_RenderText_Solid Error: %s\n", TTF_GetError());
+//        return 1;
+//    }
+//
+//    SDL_Texture *texture = SDL_CreateTextureFromSurface(gRenderer, surface);
+//
+//    SDL_Rect dstrect = {100, 100, 0, 0};
+//    SDL_QueryTexture(texture, NULL, NULL, &dstrect.w, &dstrect.h);
+//    SDL_RenderCopy(gRenderer, texture, NULL, &dstrect);
+//
+//    SDL_FreeSurface(surface);
+//    SDL_DestroyTexture(texture);
+//
+//    return 0;
+//}
 
 
 enum Game_state {START_SCREEN, GAME_START, GAME_OVER, RECORD_SCREEN};
@@ -260,12 +250,14 @@ int XMAIN(){
     Wall_Init(outside_walls[2], field, field->size_y, 0, 0, VERTICAL);
     Wall_Init(outside_walls[3], field, field->size_y, field->size_y-1, 0, VERTICAL);
 
+
     //init game utils
     Fps *fps = (Fps *)malloc(sizeof(Fps));
     if(field == NULL){
         return -1;
     }
     Fps_Init(fps);
+
 
     //init font
     TTF_Font* font = TTF_OpenFont("assets/font/poxel/poxel-font.ttf", 24);
@@ -284,6 +276,7 @@ int XMAIN(){
     int game_state = GAME_START;
 
     char fps_string[5];
+//    int match_score = 0;
 
     while(!quit){
 
@@ -317,10 +310,10 @@ int XMAIN(){
 
 
                 // render game elements
-                renderField(field);
-                renderSnake(snake);
-                renderWall(outside_walls, 4);
-                renderText(font, fps_string);
+                renderField(field, gRenderer);
+                renderSnake(snake, gRenderer);
+                renderWall(outside_walls, 4, gRenderer);
+                renderText(font, fps_string, gRenderer);
                 break;
 
             case GAME_OVER:
@@ -351,10 +344,7 @@ int XMAIN(){
 //
 //colorscheme
 //random position food generator
-//control logic
-//snakes speed
 //scoring system
-//game state
 //colision logic
 //change field->size_x to field->ntiles_x;
 //add some functionability that makes use of exponential back factor: {initial delay} * (2 ^ ({current attempt number} - 1)) = backoff factor
