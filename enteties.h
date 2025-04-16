@@ -72,7 +72,7 @@ typedef struct Wall_{
 
 } Wall;
 
-void Field_Init(Field *field, int size_x, int size_y);
+Field* Field_Init(int size_x, int size_y);
 
 void Field_Update(Field *field);
 

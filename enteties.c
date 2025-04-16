@@ -1,8 +1,12 @@
 #include "enteties.h"
 
 
-void Field_Init(Field *field, int size_x, int size_y){
+Field* Field_Init(int size_x, int size_y){
 
+    Field *field = (Field *)malloc(sizeof(Field));
+    if(field == NULL){
+        return NULL;
+    }
 
     field->tile_x = 0; //starting position
     field->tile_y = 0; //starting position
@@ -43,6 +47,7 @@ void Field_Init(Field *field, int size_x, int size_y){
         field->snakes_on_field[i] = 0;
 
     }
+    return field;
 
 }
 

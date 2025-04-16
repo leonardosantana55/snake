@@ -177,11 +177,7 @@ int XMAIN(){
 
 
     // init game enteties
-    Field *field = (Field *)malloc(sizeof(Field));
-    if(field == NULL){
-        return -1;
-    }
-    Field_Init(field, SCREEN_WIDTH, SCREEN_HEIGHT);
+    Field *field = Field_Init(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     Snake *snake = (Snake *)malloc(sizeof(Field));
     if(snake == NULL){
@@ -200,6 +196,9 @@ int XMAIN(){
     Wall_Init(outside_walls[1], field, field->size_x, 0, field->size_x-1, HORIZONTAL);
     Wall_Init(outside_walls[2], field, field->size_y, 0, 0, VERTICAL);
     Wall_Init(outside_walls[3], field, field->size_y, field->size_y-1, 0, VERTICAL);
+
+    //Wall *outside_walls[4];
+    //outside_walls[0] = Wall_Init()
 
 
     //init game utils
@@ -299,6 +298,9 @@ int XMAIN(){
 //colision logic
 //change field->size_x to field->ntiles_x;
 //add some functionability that makes use of exponential back factor: {initial delay} * (2 ^ ({current attempt number} - 1)) = backoff factor
+//finish refactor of enteties init
+//refactor SDL functions, init destroy, loadimg etc
+//game over if snake colides with snakes body
 
 
 //        if(prin){
