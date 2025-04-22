@@ -179,10 +179,6 @@ int XMAIN(){
     // init game enteties
     Field *field = Field_Init(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-//    Snake *snake = (Snake *)malloc(sizeof(Field));
-//    if(snake == NULL){
-//        return -1;
-//    }
     Snake *snake = Snake_Init(field);
 
     Wall *outside_walls[4];
