@@ -13,7 +13,8 @@ Field* Field_Init(int size_x, int size_y){
     field->tile_w = 16;
     field->tile_h = 16;
 
-    field->size_x = size_x / field->tile_w;             //how many tiles the field has in each direction
+    //sets how many tiles the field has in each direction
+    field->size_x = size_x / field->tile_w;
     field->size_y = size_y / field->tile_h;
 
     SDL_Rect a1 = {
@@ -23,6 +24,7 @@ Field* Field_Init(int size_x, int size_y){
         field->tile_h
         };
 
+    //init the positino of each tile based on a1
     for(int i=0; i<field->size_x; i++){
         for(int j=0; j<field->size_y; j++){
 
@@ -34,6 +36,7 @@ Field* Field_Init(int size_x, int size_y){
         }
     }
 
+    //init the status of each tile on the field
     for(int i=0; i<field->size_x; i++){
         for(int j=0; j<field->size_y; j++){
 
@@ -42,13 +45,14 @@ Field* Field_Init(int size_x, int size_y){
         }
     }
 
+    //init the address of each possible snake in the field to 0
     for(int i=0; i<ENTETIES_MAX_SNAKES; i++){
 
         field->snakes_on_field[i] = 0;
 
     }
-    return field;
 
+    return field;
 }
 
 
@@ -114,20 +118,27 @@ void Field_Update(Field *field){
 }
 
 
-void Snake_Init(Snake *snake, Field *field){
+Snake* Snake_Init(Field *field){
 
+    Snake *snake = (Snake *)malloc(sizeof(Field));
+    if(snake == NULL){
+        return NULL;
+    }
+
+    //init basic snakes properties
     snake->size = 3;
     snake->max_size = 10;
     snake->speed = 60 / 20;              // the speed(tile per second) is the divisor. the dividend is 60 because we ropefully are running at 60fps
     snake->speed_control = 0;
     snake->health = 1;
-    snake->motion_direction = RIGHT;
+    snake->motion_direction = RIGHT;    // the starting moving direction
 
     snake->tile_x = field->tiles[field->size_x/2][field->size_x/2].x;    // the position of the snake depends on the coordinates of the field tiles
     snake->tile_y = field->tiles[field->size_y/2][field->size_y/2].y;
     snake->tile_w = field->tile_w;
     snake->tile_h = field->tile_h;
 
+    //init the position of each tile of the snake
     for(int i=0; i<snake->size; i++){
 
         snake->tiles[i].x = snake->tile_x - (snake->tile_w * i);
@@ -150,6 +161,7 @@ void Snake_Init(Snake *snake, Field *field){
 
     }
 
+    return snake;
 }
 
 

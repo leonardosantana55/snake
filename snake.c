@@ -179,11 +179,11 @@ int XMAIN(){
     // init game enteties
     Field *field = Field_Init(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    Snake *snake = (Snake *)malloc(sizeof(Field));
-    if(snake == NULL){
-        return -1;
-    }
-    Snake_Init(snake, field);
+//    Snake *snake = (Snake *)malloc(sizeof(Field));
+//    if(snake == NULL){
+//        return -1;
+//    }
+    Snake *snake = Snake_Init(field);
 
     Wall *outside_walls[4];
     for (int i=0; i<4; i++){
@@ -301,6 +301,7 @@ int XMAIN(){
 //finish refactor of enteties init
 //refactor SDL functions, init destroy, loadimg etc
 //game over if snake colides with snakes body
+//add a gitignore to stop the anoing error for vims swp files
 
 
 //        if(prin){

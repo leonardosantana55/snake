@@ -76,7 +76,7 @@ Field* Field_Init(int size_x, int size_y);
 
 void Field_Update(Field *field);
 
-void Snake_Init(Snake *snake, Field *field);
+Snake* Snake_Init(Field *field);
 
 void Snake_Move(Snake *snake);
 
