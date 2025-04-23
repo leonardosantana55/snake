@@ -172,62 +172,42 @@ enum Game_state {START_SCREEN, GAME_START, GAME_OVER, RECORD_SCREEN};
 
 
 int XMAIN(){
+
     initSDL();
     SDL_Event e;
-
+    TTF_Font* font = TTF_OpenFont("assets/font/poxel/poxel-font.ttf", 24);
 
     // init game enteties
     Field *field = Field_Init(SCREEN_WIDTH, SCREEN_HEIGHT);
-
     Snake *snake = Snake_Init(field);
 
     Wall *outside_walls[4];
-    for (int i=0; i<4; i++){
-        outside_walls[i] = (Wall *)malloc(sizeof(Wall));
-        if(outside_walls[i] == NULL){
-            return -1;
-        }
-    }
-    Wall_Init(outside_walls[0], field, field->size_x, 0, 0, HORIZONTAL);
-    Wall_Init(outside_walls[1], field, field->size_x, 0, field->size_x-1, HORIZONTAL);
-    Wall_Init(outside_walls[2], field, field->size_y, 0, 0, VERTICAL);
-    Wall_Init(outside_walls[3], field, field->size_y, field->size_y-1, 0, VERTICAL);
-
-    //Wall *outside_walls[4];
-    //outside_walls[0] = Wall_Init()
+    outside_walls[0] = Wall_Init(field, field->size_x, 0, 0, HORIZONTAL);
+    outside_walls[1] = Wall_Init(field, field->size_x, 0, field->size_x-1, HORIZONTAL);
+    outside_walls[2] = Wall_Init(field, field->size_y, 0, 0, VERTICAL);
+    outside_walls[3] = Wall_Init(field, field->size_y, field->size_y-1, 0, VERTICAL);
 
 
     //init game utils
-    Fps *fps = (Fps *)malloc(sizeof(Fps));
-    if(field == NULL){
-        return -1;
-    }
-    Fps_Init(fps);
-
-
-    //init font
-    TTF_Font* font = TTF_OpenFont("assets/font/poxel/poxel-font.ttf", 24);
-    if (font == NULL) {
-        printf("TTF_OpenFont Error: %s\n", TTF_GetError());
-        return 1;
-    }
+    Fps* fps = Fps_Init();
 
 
     // quick hack section
 //    int control = 0;
 //    bool prin = false;
 
-    // main loop
+
+    /***************************************** MAIN LOOP ****************************************/
     bool quit = false;
     int game_state = GAME_START;
-
     char fps_string[5];
-//    int match_score = 0;
 
     while(!quit){
 
         sprintf(fps_string, "%.2f", fps->fps);    // updates fps_string
         fps->time_start = SDL_GetTicks();
+//                SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0x00 );
+        SDL_RenderClear( gRenderer );   //clear the screen
 
         switch(game_state){
 
@@ -242,18 +222,11 @@ int XMAIN(){
                 }
 
                 //game logic
-
                 Snake_Move(snake);
                 Field_Update(field);
                 if(snake->health == 0){
                     game_state = GAME_OVER;
                 }
-
-
-                //Clear screen
-                SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0x00 );
-                SDL_RenderClear( gRenderer );
-
 
                 // render game elements
                 renderField(field, gRenderer);
@@ -263,8 +236,20 @@ int XMAIN(){
                 break;
 
             case GAME_OVER:
-                printf("GAME OVER!\n");
-                quit = true;
+
+                // event logic loop
+                while(SDL_PollEvent(&e)){
+
+                    eventLogicQuit(&e, &quit);
+                    eventLogicKeyPrint(&e);
+                }
+
+                renderField(field, gRenderer);
+                renderSnake(snake, gRenderer);
+                renderWall(outside_walls, 4, gRenderer);
+                renderText(font, "GAME_OVER!", gRenderer);
+//                printf("GAME OVER!\n");
+//                quit = true;
                 break;
         }
 
@@ -276,9 +261,6 @@ int XMAIN(){
         // control frame rate
         Fps_Measure(fps);
 //        printf("fps: %.2f\n", fps->fps);
-
-
-
     }
 
     closeSDL();
@@ -294,10 +276,8 @@ int XMAIN(){
 //colision logic
 //change field->size_x to field->ntiles_x;
 //add some functionability that makes use of exponential back factor: {initial delay} * (2 ^ ({current attempt number} - 1)) = backoff factor
-//finish refactor of enteties init
 //refactor SDL functions, init destroy, loadimg etc
 //game over if snake colides with snakes body
-//add a gitignore to stop the anoing error for vims swp files
 
 
 //        if(prin){

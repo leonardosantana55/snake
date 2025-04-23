@@ -15,9 +15,11 @@ typedef struct Fps_{
 } Fps;
 
 
-void Fps_Init(Fps *fps);
+Fps* Fps_Init();
 
 void Fps_Measure(Fps *fps);
+
+int randomIntGen(int min, int max);
 
 
 #endif

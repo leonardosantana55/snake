@@ -80,7 +80,7 @@ Snake* Snake_Init(Field *field);
 
 void Snake_Move(Snake *snake);
 
-void Wall_Init(Wall *wall, Field *field, int size, int start_x, int start_y, int orientation);
+Wall* Wall_Init(Field *field, int size, int start_x, int start_y, int orientation);
 
 int colisionDetection(Field *field, int x, int y, int direction);
 

@@ -1,7 +1,15 @@
 #include <SDL2/SDL.h>
+#include <time.h>
+#include <stdlib.h>
 #include "utils.h"
 
-void Fps_Init(Fps *fps){
+
+Fps* Fps_Init(){
+
+    Fps *fps = (Fps *)malloc(sizeof(Fps));
+    if(fps == NULL){
+        return NULL;
+    }
 
     fps->time_start = 0;
     fps->time_end = 0;
@@ -12,6 +20,7 @@ void Fps_Init(Fps *fps){
     fps->desired_fps = 60;
     fps->surplus = 0;
 
+    return fps;
 }
 
 
@@ -41,4 +50,13 @@ void Fps_Measure(Fps *fps){
         fps->timer -= 1000;
     }
 
+}
+
+
+int randomIntGen(int min, int max){
+    
+    srand(time(NULL));
+    int random_int = rand() % max + min;
+
+    return random_int;
 }

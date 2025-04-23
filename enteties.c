@@ -228,7 +228,12 @@ void Snake_Move(Snake *snake){
 }
 
 
-void Wall_Init(Wall *wall, Field *field, int size, int start_x, int start_y, int orientation){
+Wall* Wall_Init(Field *field, int size, int start_x, int start_y, int orientation){
+
+    Wall* wall = (Wall *)malloc(sizeof(Wall));
+    if(wall == NULL){
+        return NULL;
+    }
 
     wall->size = size;
     wall->orientation = orientation;
@@ -277,6 +282,7 @@ void Wall_Init(Wall *wall, Field *field, int size, int start_x, int start_y, int
         }
     }
 
+    return wall;
 }
 
 
