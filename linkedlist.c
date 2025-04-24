@@ -17,13 +17,17 @@
     LinkedList_Init(mylist);
 
 ******************************************************************************/
-void LinkedList_Init(LinkedList *list){
+LinkedList* LinkedList_Init(LinkedList *list){
+
+    LinkedList *list = (LinkedList *)malloc(sizeof(LinkedList));
+    if(mylist == NULL){
+        return -1;
 
     list->size = 0;
     list->tail = NULL;
     list->head = NULL;
 
-    return;
+    return list;
 }
 
 

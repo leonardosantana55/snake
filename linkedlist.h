@@ -21,7 +21,7 @@ typedef struct LinkedList_{
                                Public interface
 ******************************************************************************/
 
-void LinkedList_Init(LinkedList *list);
+LinkedList* LinkedList_Init(LinkedList *list){
 
 void LinkedList_Destroy(LinkedList *list);
 

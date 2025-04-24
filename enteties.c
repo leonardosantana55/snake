@@ -286,6 +286,36 @@ Wall* Wall_Init(Field *field, int size, int start_x, int start_y, int orientatio
 }
 
 
+
+Food* Food_Init(Field *field){
+    
+    Food* food = (Food *)malloc(sizeof(Food));
+    if(food == NULL){
+        return NULL;
+    }
+
+    food->health = 1;
+    food->time_to_expire = 10;
+
+    int x = randomIntGen(1, field->size_x-1);
+    int y = randomIntGen(1, field->size_y-1);
+    while (colisionDetection(field, x, y, NULL)){
+        break;
+        //to be continued
+    }
+    
+    food->tile_x;
+    food->tile_y;
+    food->tile_w;
+    food->tile_h;
+
+    SDL_Rect tiles[1];
+
+    return food;
+
+}
+
+
 int colisionDetection(Field *field, int x, int y, int direction){
     //gets x y pixel and uses division to get the a b index
     //hopefully when i pass NULL as the direction param the default will wun on the switch case
