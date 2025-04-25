@@ -43,8 +43,8 @@
 
 
 //Global variables
-const int SCREEN_WIDTH = 1024;
-const int SCREEN_HEIGHT = 1024;
+const int SCREEN_WIDTH = 1024/2;
+const int SCREEN_HEIGHT = 1024/2;
 SDL_Window* gWindow = NULL;
 SDL_Surface* gWindow_surface = NULL;
 SDL_Renderer* gRenderer = NULL;
@@ -225,6 +225,7 @@ int XMAIN(){
                 //game logic
                 Snake_Move(snake);
                 Field_Update(field);
+                Food_Spawn(food);
                 //quick hack
                 if(snake->health == 0){
                     game_state = GAME_OVER;

@@ -202,6 +202,10 @@ void Snake_Move(Snake *snake){
 
             case FOOD:
                 snake->size++;
+                snake->field->food_on_field[0]->health = 0;
+                //what if a have many foods on field? the above approach would not work
+                // i think that maybe i would need to pass the position of the snake,
+                //and check every food to match its position
                 break;
         }
 
@@ -307,6 +311,29 @@ Wall* Wall_Init(Field *field, int size, int start_x, int start_y, int orientatio
 }
 
 
+void generateFoodPosition(Food* food){
+    
+    //generate a position and check if it is ocupied
+    int min = 1;
+    int max = food->field->size_y * food->field->tile_h;
+    int x = randomIntGen(min, max);
+    int y = randomIntGen(min, max);
+
+    while (colisionDetection(food->field, x, y, NONE) != 0){
+
+        x = randomIntGen(min, max);
+        y = randomIntGen(min, max);
+
+    }
+
+    int a = x / food->field->tile_h;
+    int b = y / food->field->tile_w;
+
+    food->tile.x = food->field->tiles[a][b].x;
+    food->tile.y = food->field->tiles[a][b].y;
+}
+
+
 Food* Food_Init(Field *field){
 
     Food* food = (Food *)malloc(sizeof(Food));
@@ -316,6 +343,7 @@ Food* Food_Init(Field *field){
 
     food->health = 1;
     food->time_to_expire = 10;
+    food->field = field;
 
     //generate a position and check if it is ocupied
     int min = 1;
@@ -333,15 +361,13 @@ Food* Food_Init(Field *field){
     int a = x / field->tile_h;
     int b = y / field->tile_w;
 
-    food->tile.x = field->tiles[a][b].x;                   //ta errado saqui
+    food->tile.x = field->tiles[a][b].x;
     food->tile.y = field->tiles[a][b].y;
     food->tile.w = field->tile_h;
     food->tile.h = field->tile_w;
 
     //make comunication possible betwheen objects
     //tell the field the address of the foods on it
-    food->field = field;
-
     for(int i=0; i<ENTETIES_MAX_FOOD; i++){
 
         if(field->food_on_field[i] == 0){
@@ -355,8 +381,33 @@ Food* Food_Init(Field *field){
 }
 
 
-//void Food_Spawn(Food *food);
-//To be continued
+void Food_Spawn(Food *food){
+
+    if (food->health == 0){
+
+        //generate a position and check if it is ocupied
+        int min = 1;
+        int max = food->field->size_y * food->field->tile_h;
+        int x = randomIntGen(min, max);
+        int y = randomIntGen(min, max);
+
+        while (colisionDetection(food->field, x, y, NONE) != 0){
+
+            x = randomIntGen(min, max);
+            y = randomIntGen(min, max);
+
+        }
+
+        int a = x / food->field->tile_h;
+        int b = y / food->field->tile_w;
+
+        food->tile.x = food->field->tiles[a][b].x;
+        food->tile.y = food->field->tiles[a][b].y;
+
+        food->health = 1;
+    }
+}
+
 
 int colisionDetection(Field *field, int x, int y, int direction){
     //this function gets x y pixel and uses division to get the a b index
