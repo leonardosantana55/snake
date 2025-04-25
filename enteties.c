@@ -45,11 +45,20 @@ Field* Field_Init(int size_x, int size_y){
         }
     }
 
-    //init the address of each possible snake in the field to 0
+    //init the address of each possible enteti in the field to 0
     for(int i=0; i<ENTETIES_MAX_SNAKES; i++){
 
         field->snakes_on_field[i] = 0;
+    }
 
+    for(int i=0; i<ENTETIES_MAX_WALLS; i++){
+
+        field->walls_on_field[i] = 0;
+    }
+
+    for(int i=0; i<ENTETIES_MAX_FOOD; i++){
+
+        field->food_on_field[i] = 0;
     }
 
     return field;
@@ -114,7 +123,19 @@ void Field_Update(Field *field){
     }
 
     //look for food
+    for(int i=0; i<ENTETIES_MAX_FOOD; i++){
 
+        if(field->food_on_field[i] != 0){
+        
+                a = field->food_on_field[i]->tile.y / field->tile_h;
+                b = field->food_on_field[i]->tile.x / field->tile_w;
+
+                field->on_tile[a][b] = FOOD;
+//                printf("j: %d= a: %d, b: %d - ", j, a,b);
+
+//            printf("\n");
+        }
+    }
 }
 
 
@@ -286,9 +307,8 @@ Wall* Wall_Init(Field *field, int size, int start_x, int start_y, int orientatio
 }
 
 
-
 Food* Food_Init(Field *field){
-    
+
     Food* food = (Food *)malloc(sizeof(Food));
     if(food == NULL){
         return NULL;
@@ -297,28 +317,50 @@ Food* Food_Init(Field *field){
     food->health = 1;
     food->time_to_expire = 10;
 
-    int x = randomIntGen(1, field->size_x-1);
-    int y = randomIntGen(1, field->size_y-1);
-    while (colisionDetection(field, x, y, NULL)){
-        break;
-        //to be continued
-    }
-    
-    food->tile_x;
-    food->tile_y;
-    food->tile_w;
-    food->tile_h;
+    //generate a position and check if it is ocupied
+    int min = 1;
+    int max = field->size_y * field->tile_h;
+    int x = randomIntGen(min, max);
+    int y = randomIntGen(min, max);
 
-    SDL_Rect tiles[1];
+    while (colisionDetection(field, x, y, NONE) != 0){
+
+        x = randomIntGen(min, max);
+        y = randomIntGen(min, max);
+
+    }
+
+    int a = x / field->tile_h;
+    int b = y / field->tile_w;
+
+    food->tile.x = field->tiles[a][b].x;                   //ta errado saqui
+    food->tile.y = field->tiles[a][b].y;
+    food->tile.w = field->tile_h;
+    food->tile.h = field->tile_w;
+
+    //make comunication possible betwheen objects
+    //tell the field the address of the foods on it
+    food->field = field;
+
+    for(int i=0; i<ENTETIES_MAX_FOOD; i++){
+
+        if(field->food_on_field[i] == 0){
+            field->food_on_field[i] = food;
+            break;
+
+        }
+    }
 
     return food;
-
 }
 
 
+//void Food_Spawn(Food *food);
+//To be continued
+
 int colisionDetection(Field *field, int x, int y, int direction){
-    //gets x y pixel and uses division to get the a b index
-    //hopefully when i pass NULL as the direction param the default will wun on the switch case
+    //this function gets x y pixel and uses division to get the a b index
+
     int a = 0;
     int b = 0;
 

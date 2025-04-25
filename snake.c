@@ -180,6 +180,7 @@ int XMAIN(){
     // init game enteties
     Field *field = Field_Init(SCREEN_WIDTH, SCREEN_HEIGHT);
     Snake *snake = Snake_Init(field);
+    Food *food = Food_Init(field);
 
     Wall *outside_walls[4];
     outside_walls[0] = Wall_Init(field, field->size_x, 0, 0, HORIZONTAL);
@@ -224,6 +225,7 @@ int XMAIN(){
                 //game logic
                 Snake_Move(snake);
                 Field_Update(field);
+                //quick hack
                 if(snake->health == 0){
                     game_state = GAME_OVER;
                 }
@@ -232,6 +234,7 @@ int XMAIN(){
                 renderField(field, gRenderer);
                 renderSnake(snake, gRenderer);
                 renderWall(outside_walls, 4, gRenderer);
+                renderFood(food, gRenderer);
                 renderText(font, fps_string, gRenderer);
                 break;
 

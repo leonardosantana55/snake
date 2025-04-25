@@ -24,6 +24,16 @@ void renderSnake(Snake *snake, SDL_Renderer *renderer){
     }
 }
 
+
+void renderFood(Food *food, SDL_Renderer *renderer){
+
+        SDL_SetRenderDrawColor(renderer, 255/4, 255/4, 255/4, 255/4);
+        SDL_RenderFillRect(renderer, &food->tile);
+        SDL_SetRenderDrawColor(renderer, 255/255, 255/255, 255/255, 255/255);
+        SDL_RenderDrawRect(renderer, &food->tile);
+}
+
+
 void renderWall(Wall *wall[], int size, SDL_Renderer *renderer){
 
     for(int i=0; i<size; i++){
@@ -37,6 +47,7 @@ void renderWall(Wall *wall[], int size, SDL_Renderer *renderer){
         }
     }
 }
+
 
 int renderText(TTF_Font *font, const char *text, SDL_Renderer *renderer){
 

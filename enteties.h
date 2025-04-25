@@ -6,8 +6,9 @@
 #define ENTETIES_MAX_FOOD 100
 
 #include <SDL2/SDL.h>
+#include "utils.h"
 
-enum Direction {RIGHT, DOWN, LEFT, UP};
+enum Direction {NONE, RIGHT, DOWN, LEFT, UP};
 
 enum Entetie_name {EMPTY, SNAKE, FOOD, WALL};
 
@@ -77,12 +78,7 @@ typedef struct Food_{
     int health;
     int time_to_expire;
 
-    int tile_x;
-    int tile_y;
-    int tile_w;
-    int tile_h;
-
-    SDL_Rect tiles[1];
+    SDL_Rect tile;
     Field *field;
 
 } Food;
