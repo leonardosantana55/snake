@@ -214,7 +214,6 @@ void Snake_Move(Snake *snake){
         SDL_Rect temp = snake->tiles[0];
 
         switch(snake->motion_direction){
-            //TODO: add colision detection
 
             case RIGHT:
                 snake->tiles[0].x += snake->tile_w;
@@ -312,22 +311,22 @@ Wall* Wall_Init(Field *field, int size, int start_x, int start_y, int orientatio
 
 
 void generateFoodPosition(Food* food){
-    
+
     //generate a position and check if it is ocupied
     int min = 1;
-    int max = food->field->size_y * food->field->tile_h;
-    int x = randomIntGen(min, max);
-    int y = randomIntGen(min, max);
+    int max = food->field->size_x - 1;
+    int x = randomIntGen(min, max) * food->field->tile_w;
+    int y = randomIntGen(min, max) * food->field->tile_h;
 
     while (colisionDetection(food->field, x, y, NONE) != 0){
 
-        x = randomIntGen(min, max);
-        y = randomIntGen(min, max);
+        x = randomIntGen(min, max) * food->field->tile_w;
+        y = randomIntGen(min, max) * food->field->tile_h;
 
     }
 
-    int a = x / food->field->tile_h;
-    int b = y / food->field->tile_w;
+    int b = x / food->field->tile_h;
+    int a = y / food->field->tile_w;
 
     food->tile.x = food->field->tiles[a][b].x;
     food->tile.y = food->field->tiles[a][b].y;
@@ -345,24 +344,7 @@ Food* Food_Init(Field *field){
     food->time_to_expire = 10;
     food->field = field;
 
-    //generate a position and check if it is ocupied
-    int min = 1;
-    int max = field->size_y * field->tile_h;
-    int x = randomIntGen(min, max);
-    int y = randomIntGen(min, max);
-
-    while (colisionDetection(field, x, y, NONE) != 0){
-
-        x = randomIntGen(min, max);
-        y = randomIntGen(min, max);
-
-    }
-
-    int a = x / field->tile_h;
-    int b = y / field->tile_w;
-
-    food->tile.x = field->tiles[a][b].x;
-    food->tile.y = field->tiles[a][b].y;
+    generateFoodPosition(food);
     food->tile.w = field->tile_h;
     food->tile.h = field->tile_w;
 
@@ -385,25 +367,7 @@ void Food_Spawn(Food *food){
 
     if (food->health == 0){
 
-        //generate a position and check if it is ocupied
-        int min = 1;
-        int max = food->field->size_y * food->field->tile_h;
-        int x = randomIntGen(min, max);
-        int y = randomIntGen(min, max);
-
-        while (colisionDetection(food->field, x, y, NONE) != 0){
-
-            x = randomIntGen(min, max);
-            y = randomIntGen(min, max);
-
-        }
-
-        int a = x / food->field->tile_h;
-        int b = y / food->field->tile_w;
-
-        food->tile.x = food->field->tiles[a][b].x;
-        food->tile.y = food->field->tiles[a][b].y;
-
+        generateFoodPosition(food);
         food->health = 1;
     }
 }
@@ -418,28 +382,28 @@ int colisionDetection(Field *field, int x, int y, int direction){
     switch(direction){
 
         case RIGHT:
-            a = (x / field->tile_h) + 1;
-            b = y / field->tile_w;
+            b = (x / field->tile_w) + 1;
+            a = y / field->tile_h;
             break;
 
         case DOWN:
-            a = x / field->tile_h;
-            b = (y / field->tile_w) + 1;
+            b = x / field->tile_w;
+            a = (y / field->tile_h) + 1;
             break;
 
         case LEFT:
-            a = (x / field->tile_h) - 1;
-            b = y / field->tile_w;
+            b = (x / field->tile_w) - 1;
+            a = y / field->tile_h;
             break;
 
         case UP:
-            a = x / field->tile_h;
-            b = (y / field->tile_w) - 1;
+            b = x / field->tile_w;
+            a = (y / field->tile_h) - 1;
             break;
 
         default:
-            a = x / field->tile_h;
-            b = y / field->tile_w;
+            b = x / field->tile_w;
+            a = y / field->tile_h;
             break;
     }
 

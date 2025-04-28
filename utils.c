@@ -1,5 +1,4 @@
 #include <SDL2/SDL.h>
-#include <time.h>
 #include <stdlib.h>
 #include "utils.h"
 
@@ -54,8 +53,7 @@ void Fps_Measure(Fps *fps){
 
 
 int randomIntGen(int min, int max){
-    
-    srand(time(NULL));
+
     int random_int = rand() % max + min;
 
     return random_int;

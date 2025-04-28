@@ -28,6 +28,7 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 #include <math.h>
+#include <time.h>
 
 #include "enteties.h"
 #include "utils.h"
@@ -176,6 +177,7 @@ int XMAIN(){
     initSDL();
     SDL_Event e;
     TTF_Font* font = TTF_OpenFont("assets/font/poxel/poxel-font.ttf", 24);
+    srand(time(NULL));
 
     // init game enteties
     Field *field = Field_Init(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -223,8 +225,8 @@ int XMAIN(){
                 }
 
                 //game logic
-                Snake_Move(snake);
                 Field_Update(field);
+                Snake_Move(snake);
                 Food_Spawn(food);
                 //quick hack
                 if(snake->health == 0){

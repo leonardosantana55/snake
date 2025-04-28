@@ -22,19 +22,30 @@ void eventLogicMoveSnake(SDL_Event* e, Snake* snake){
         switch (e->key.keysym.sym){
 
             case SDLK_RIGHT:
-                snake->motion_direction = RIGHT;
+                if(snake->motion_direction != LEFT){
+
+                    snake->motion_direction = RIGHT;
+                }
                 break;
 
             case SDLK_DOWN:
-                snake->motion_direction = DOWN;
+                if(snake->motion_direction != UP){
+
+                    snake->motion_direction = DOWN;
+                }
                 break;
 
             case SDLK_LEFT:
-                snake->motion_direction = LEFT;
+                if(snake->motion_direction != RIGHT){
+
+                    snake->motion_direction = LEFT;
+                }
                 break;
 
             case SDLK_UP:
-                snake->motion_direction = UP;
+                if(snake->motion_direction != DOWN){
+                    snake->motion_direction = UP;
+                }
                 break;
         }
     }
