@@ -20,6 +20,27 @@ LIBRARY_PATHS =-LC:\Users\XQ6460\Downloads\c\mingw64\x86_64-w64-mingw32\lib
 OBJ_NAME=prog
 
 all:$(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(OBJ_NAME) $(LIBRARY_PATHS) $(LINKER_FLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -g -o $(OBJ_NAME) $(LIBRARY_PATHS) $(LINKER_FLAGS)
 clean:
 	rm -f $(OBJS)
+
+
+## statically compile SDL2
+## Link for stackoverflow answer: https://stackoverflow.com/questions/17620884/static-linking-of-sdl2-libraries
+
+## Compiler and flags
+##CXX = g++
+##LINKER_FLAGS= -static
+##LINKER_FLAGS += `pkg-config --libs --static SDL2`
+##LINKER_FLAGS += `pkg-config --libs --static SDL2_ttf`
+##LINKER_FLAGS += `pkg-config --libs --static SDL2_Image`
+##LINKER_FLAGS += `pkg-config --libs --static SDL2_Mixer`
+##LINKER_FLAGS += -lbrotlicommon -lsharpyuv
+##CXXFLAGS = -lmingw32 -lws2_32 -lSDL2main -lSDL2 -lSDL2_Image -lSDL2_TTF -lSDL2_Mixer
+##
+##TARGET = <my_program>.exe
+##
+##SRC = <my_program>.cpp
+##
+##$(TARGET): $(SRC)
+##    $(CXX) $(SRC) -o $(TARGET) $(CXXFLAGS) $(LINKER_FLAGS)
