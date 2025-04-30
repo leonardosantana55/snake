@@ -14,7 +14,7 @@ void renderFood(Food *food, SDL_Renderer *renderer);
 
 void renderWall(Wall *wall[], int size, SDL_Renderer *renderer);
 
-int renderText(TTF_Font *font, const char *text, SDL_Renderer *renderer);
+int renderText(TTF_Font *font, const char *text, int x, int y, SDL_Renderer *renderer);
 
 
 #endif

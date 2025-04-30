@@ -49,7 +49,7 @@ void renderWall(Wall *wall[], int size, SDL_Renderer *renderer){
 }
 
 
-int renderText(TTF_Font *font, const char *text, SDL_Renderer *renderer){
+int renderText(TTF_Font *font, const char *text, int x, int y, SDL_Renderer *renderer){
 
     SDL_Color color = {255,255,255,255};
     SDL_Surface* surface = TTF_RenderText_Solid(font, text, color);
@@ -60,7 +60,7 @@ int renderText(TTF_Font *font, const char *text, SDL_Renderer *renderer){
 
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-    SDL_Rect dstrect = {0, 0, 0, 0};
+    SDL_Rect dstrect = {x, y, 0, 0};
     SDL_QueryTexture(texture, NULL, NULL, &dstrect.w, &dstrect.h);
     SDL_RenderCopy(renderer, texture, NULL, &dstrect);
 

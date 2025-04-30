@@ -43,10 +43,13 @@ typedef struct Snake_{
     
     int size;
     int max_size;
-    int speed;
+    unsigned int speed;
     int speed_control;
+    int speed_control_factor;
     int health;
     int motion_direction;
+    int record;
+    int starvation;
 
     int tile_x; // starting position
     int tile_y; // starting position

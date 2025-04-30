@@ -148,11 +148,15 @@ Snake* Snake_Init(Field *field){
 
     //init basic snakes properties
     snake->size = 3;
-    snake->max_size = 10;
+    // its the field size - the 4 outside walls - 1
+    snake->max_size = ((field->size_x * field->size_y) - (4 * field->size_x)) - 1;
     snake->speed = 60 / 20;              // the speed(tile per second) is the divisor. the dividend is 60 because we ropefully are running at 60fps
-    snake->speed_control = 0;
+    snake->speed_control_factor = 7;
+    snake->speed_control = snake->speed_control_factor;
     snake->health = 1;
     snake->motion_direction = RIGHT;    // the starting moving direction
+    snake->record = 0;
+    snake->starvation = 0;
 
     snake->tile_x = field->tiles[field->size_x/2][field->size_x/2].x;    // the position of the snake depends on the coordinates of the field tiles
     snake->tile_y = field->tiles[field->size_y/2][field->size_y/2].y;
@@ -190,7 +194,7 @@ void Snake_Move(Snake *snake){
     //move the head of the snake and copy the previous tile to the old head position and so on
 
 
-    if (snake->speed_control > snake->speed){
+    if (snake->speed_control < snake->speed){
 
         int colision = colisionDetection(snake->field, snake->tiles[0].x, snake->tiles[0].y, snake->motion_direction);
 
@@ -202,11 +206,23 @@ void Snake_Move(Snake *snake){
 
             case FOOD:
                 snake->size++;
+                snake->speed++;
+                snake->record += 100;
+                snake->starvation = 0;
                 snake->field->food_on_field[0]->health = 0;
                 //what if a have many foods on field? the above approach would not work
                 // i think that maybe i would need to pass the position of the snake,
                 //and check every food to match its position
                 break;
+
+            default:
+            snake->record++;
+            snake->starvation++;
+            if(snake->starvation >= 15){
+                snake->speed--;
+                snake->starvation = 0;
+                //TODO: implement backfactor intead of zeroing starvation
+            }
         }
 
 
@@ -243,11 +259,11 @@ void Snake_Move(Snake *snake){
 
         }
 
-        snake->speed_control = 0;
+        snake->speed_control = snake->speed_control_factor;
     }
     else{
 
-        snake->speed_control++;
+        snake->speed_control--;
     }
 }
 

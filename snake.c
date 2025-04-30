@@ -219,10 +219,12 @@ int XMAIN(){
     bool quit = false;
     int game_state = GAME_START;
     char fps_string[5];
+    char record_string[16];
 
     while(!quit){
 
         sprintf(fps_string, "%.2f", fps->fps);    // updates fps_string
+        sprintf(record_string, "%d", snake->record);
         fps->time_start = SDL_GetTicks();
 //                SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0x00 );
         SDL_RenderClear( gRenderer );   //clear the screen
@@ -256,7 +258,8 @@ int XMAIN(){
                 renderFood(food, gRenderer);
 
                 SDL_RenderSetViewport(gRenderer, &menu_view_port);
-                renderText(font, fps_string, gRenderer);
+                renderText(font, fps_string, 0, 0, gRenderer);
+                renderText(font, record_string, (MENU_WIDTH/4)*1, 0, gRenderer);
                 break;
 
             case GAME_OVER:
@@ -274,7 +277,8 @@ int XMAIN(){
                 renderWall(outside_walls, 4, gRenderer);
 
                 SDL_RenderSetViewport(gRenderer, &menu_view_port);
-                renderText(font, "GAME_OVER!", gRenderer);
+                renderText(font, "GAME_OVER!", (MENU_WIDTH/4)*2, 0, gRenderer);
+                renderText(font, record_string, (MENU_WIDTH/4)*1, 0, gRenderer);
 //                printf("GAME OVER!\n");
 //                quit = true;
                 break;
@@ -283,6 +287,8 @@ int XMAIN(){
 
         //Update screen
         SDL_RenderPresent( gRenderer );
+
+        SDL_Log("speed: %d, starvation: %d\n", snake->speed, snake->starvation);
 
 
         // control frame rate
