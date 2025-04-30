@@ -44,8 +44,15 @@
 
 
 //Global variables
-const int SCREEN_WIDTH = 1024/2;
-const int SCREEN_HEIGHT = 1024/2;
+const int BOARD_WIDTH = 512;
+const int BOARD_HEIGHT = 512;
+
+const int MENU_WIDTH = 512;
+const int MENU_HEIGHT = 32;
+
+const int SCREEN_WIDTH = BOARD_WIDTH;
+const int SCREEN_HEIGHT = BOARD_HEIGHT + MENU_HEIGHT;
+
 SDL_Window* gWindow = NULL;
 SDL_Surface* gWindow_surface = NULL;
 SDL_Renderer* gRenderer = NULL;
@@ -179,8 +186,21 @@ int XMAIN(){
     TTF_Font* font = TTF_OpenFont("assets/font/poxel/poxel-font.ttf", 24);
     srand(time(NULL));
 
+    //set viewports
+    SDL_Rect menu_view_port;
+    menu_view_port.x = 0;
+    menu_view_port.y = 0;
+    menu_view_port.w = SCREEN_WIDTH;
+    menu_view_port.h = MENU_HEIGHT;
+
+    SDL_Rect board_view_port;
+    board_view_port.x = 0;
+    board_view_port.y = MENU_HEIGHT;
+    board_view_port.w = SCREEN_WIDTH;
+    board_view_port.h = SCREEN_HEIGHT - MENU_HEIGHT;
+    
     // init game enteties
-    Field *field = Field_Init(SCREEN_WIDTH, SCREEN_HEIGHT);
+    Field *field = Field_Init(BOARD_WIDTH, BOARD_HEIGHT);
     Snake *snake = Snake_Init(field);
     Food *food = Food_Init(field);
 
@@ -193,11 +213,6 @@ int XMAIN(){
 
     //init game utils
     Fps* fps = Fps_Init();
-
-
-    // quick hack section
-//    int control = 0;
-//    bool prin = false;
 
 
     /***************************************** MAIN LOOP ****************************************/
@@ -234,10 +249,13 @@ int XMAIN(){
                 }
 
                 // render game elements
+                SDL_RenderSetViewport(gRenderer, &board_view_port);
                 renderField(field, gRenderer);
                 renderSnake(snake, gRenderer);
                 renderWall(outside_walls, 4, gRenderer);
                 renderFood(food, gRenderer);
+
+                SDL_RenderSetViewport(gRenderer, &menu_view_port);
                 renderText(font, fps_string, gRenderer);
                 break;
 
@@ -249,10 +267,13 @@ int XMAIN(){
                     eventLogicQuit(&e, &quit);
                     eventLogicKeyPrint(&e);
                 }
-
+                
+                SDL_RenderSetViewport(gRenderer, &board_view_port);
                 renderField(field, gRenderer);
                 renderSnake(snake, gRenderer);
                 renderWall(outside_walls, 4, gRenderer);
+
+                SDL_RenderSetViewport(gRenderer, &menu_view_port);
                 renderText(font, "GAME_OVER!", gRenderer);
 //                printf("GAME OVER!\n");
 //                quit = true;

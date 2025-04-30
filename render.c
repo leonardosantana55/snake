@@ -60,7 +60,7 @@ int renderText(TTF_Font *font, const char *text, SDL_Renderer *renderer){
 
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-    SDL_Rect dstrect = {100, 100, 0, 0};
+    SDL_Rect dstrect = {0, 0, 0, 0};
     SDL_QueryTexture(texture, NULL, NULL, &dstrect.w, &dstrect.h);
     SDL_RenderCopy(renderer, texture, NULL, &dstrect);
 
