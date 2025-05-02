@@ -40,16 +40,15 @@ typedef struct Field_{
 } Field;
 
 typedef struct Snake_{
-    
+
     int size;
     int max_size;
-    unsigned int speed;
-    int speed_control;
-    int speed_control_factor;
+    float speed;
+    float speed_control;
+    float speed_control_factor;
     int health;
     int motion_direction;
-    int record;
-    int starvation;
+    int score;
 
     int tile_x; // starting position
     int tile_y; // starting position

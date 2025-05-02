@@ -218,13 +218,13 @@ int XMAIN(){
     /***************************************** MAIN LOOP ****************************************/
     bool quit = false;
     int game_state = GAME_START;
-    char fps_string[5];
-    char record_string[16];
+    char fps_string[16];
+    char score_string[32];
 
     while(!quit){
 
-        sprintf(fps_string, "%.2f", fps->fps);    // updates fps_string
-        sprintf(record_string, "%d", snake->record);
+        sprintf(fps_string, "FPS: %.2f", fps->fps);    // updates fps_string
+        sprintf(score_string, "Score: %d", snake->score);
         fps->time_start = SDL_GetTicks();
 //                SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0x00 );
         SDL_RenderClear( gRenderer );   //clear the screen
@@ -259,7 +259,7 @@ int XMAIN(){
 
                 SDL_RenderSetViewport(gRenderer, &menu_view_port);
                 renderText(font, fps_string, 0, 0, gRenderer);
-                renderText(font, record_string, (MENU_WIDTH/4)*1, 0, gRenderer);
+                renderText(font, score_string, (MENU_WIDTH/8)*5, 0, gRenderer);
                 break;
 
             case GAME_OVER:
@@ -270,17 +270,15 @@ int XMAIN(){
                     eventLogicQuit(&e, &quit);
                     eventLogicKeyPrint(&e);
                 }
-                
+
                 SDL_RenderSetViewport(gRenderer, &board_view_port);
                 renderField(field, gRenderer);
                 renderSnake(snake, gRenderer);
                 renderWall(outside_walls, 4, gRenderer);
 
                 SDL_RenderSetViewport(gRenderer, &menu_view_port);
-                renderText(font, "GAME_OVER!", (MENU_WIDTH/4)*2, 0, gRenderer);
-                renderText(font, record_string, (MENU_WIDTH/4)*1, 0, gRenderer);
-//                printf("GAME OVER!\n");
-//                quit = true;
+                renderText(font, "GAME_OVER!", (MENU_WIDTH/8)*0, 0, gRenderer);
+                renderText(font, score_string, (MENU_WIDTH/8)*5, 0, gRenderer);
                 break;
         }
 
@@ -288,7 +286,7 @@ int XMAIN(){
         //Update screen
         SDL_RenderPresent( gRenderer );
 
-        SDL_Log("speed: %d, starvation: %d\n", snake->speed, snake->starvation);
+        SDL_Log("speed: %0.2f, food x,y: %d, %d\n", snake->speed, food->tile.x, food->tile.y);
 
 
         // control frame rate

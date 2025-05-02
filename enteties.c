@@ -150,13 +150,12 @@ Snake* Snake_Init(Field *field){
     snake->size = 3;
     // its the field size - the 4 outside walls - 1
     snake->max_size = ((field->size_x * field->size_y) - (4 * field->size_x)) - 1;
-    snake->speed = 60 / 20;              // the speed(tile per second) is the divisor. the dividend is 60 because we ropefully are running at 60fps
-    snake->speed_control_factor = 7;
+    snake->speed = 5.0;
+    snake->speed_control_factor = 7.0;
     snake->speed_control = snake->speed_control_factor;
     snake->health = 1;
     snake->motion_direction = RIGHT;    // the starting moving direction
-    snake->record = 0;
-    snake->starvation = 0;
+    snake->score = 0;
 
     snake->tile_x = field->tiles[field->size_x/2][field->size_x/2].x;    // the position of the snake depends on the coordinates of the field tiles
     snake->tile_y = field->tiles[field->size_y/2][field->size_y/2].y;
@@ -193,7 +192,6 @@ Snake* Snake_Init(Field *field){
 void Snake_Move(Snake *snake){
     //move the head of the snake and copy the previous tile to the old head position and so on
 
-
     if (snake->speed_control < snake->speed){
 
         int colision = colisionDetection(snake->field, snake->tiles[0].x, snake->tiles[0].y, snake->motion_direction);
@@ -204,11 +202,17 @@ void Snake_Move(Snake *snake){
                 snake->health = 0;
                 return;
 
+            case SNAKE:
+                snake->health = 0;
+                return;
+
             case FOOD:
                 snake->size++;
-                snake->speed++;
-                snake->record += 100;
-                snake->starvation = 0;
+                snake->speed += 0.1;
+                //here i reward the player for playing fast
+                //the faster the snake, the higher the points
+                //TODO: reward the player for cathing food near the walls
+                snake->score += snake->speed * 100;
                 snake->field->food_on_field[0]->health = 0;
                 //what if a have many foods on field? the above approach would not work
                 // i think that maybe i would need to pass the position of the snake,
@@ -216,13 +220,8 @@ void Snake_Move(Snake *snake){
                 break;
 
             default:
-            snake->record++;
-            snake->starvation++;
-            if(snake->starvation >= 15){
-                snake->speed--;
-                snake->starvation = 0;
-                //TODO: implement backfactor intead of zeroing starvation
-            }
+            snake->score++;
+            snake->speed -= 0.001;
         }
 
 
@@ -263,7 +262,7 @@ void Snake_Move(Snake *snake){
     }
     else{
 
-        snake->speed_control--;
+        snake->speed_control -= 0.5;
     }
 }
 
@@ -329,8 +328,8 @@ Wall* Wall_Init(Field *field, int size, int start_x, int start_y, int orientatio
 void generateFoodPosition(Food* food){
 
     //generate a position and check if it is ocupied
-    int min = 1;
-    int max = food->field->size_x - 1;
+    int min = 2;
+    int max = food->field->size_x - 2;
     int x = randomIntGen(min, max) * food->field->tile_w;
     int y = randomIntGen(min, max) * food->field->tile_h;
 
