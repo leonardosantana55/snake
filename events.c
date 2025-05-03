@@ -16,6 +16,19 @@ void eventLogicKeyPrint(SDL_Event* e){
 }
 
 
+void eventLogicGamestate(SDL_Event* e, int* game_state, Field* field, Snake* snake){
+     if(e->type == SDL_KEYDOWN){
+         switch (e->key.keysym.sym){
+            case SDLK_SPACE:
+                free(snake);
+                snake = Snake_Init(field);
+                *game_state = GAME_START;
+         }
+     }
+}
+
+
+
 void eventLogicMoveSnake(SDL_Event* e, Snake* snake){
     if(e->type == SDL_KEYDOWN){
 

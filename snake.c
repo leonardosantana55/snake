@@ -34,6 +34,7 @@
 #include "utils.h"
 #include "events.h"
 #include "render.h"
+#include "game_state.h"
 
 // its a breeze building this program on linux or windows 
 #ifdef _WIN32
@@ -57,6 +58,8 @@ SDL_Window* gWindow = NULL;
 SDL_Surface* gWindow_surface = NULL;
 SDL_Renderer* gRenderer = NULL;
 SDL_Texture* gTexture = NULL;
+
+//enum Game_state {START_SCREEN, GAME_START, GAME_OVER, RECORD_SCREEN};
 
 bool initSDL(){
     bool success = true;
@@ -176,7 +179,6 @@ void closeSDL(){
 }
 
 
-enum Game_state {START_SCREEN, GAME_START, GAME_OVER, RECORD_SCREEN};
 
 
 int XMAIN(){
@@ -242,9 +244,9 @@ int XMAIN(){
                 }
 
                 //game logic
-                Field_Update(field);
-                Snake_Move(snake);
                 Food_Spawn(food);
+                Snake_Move(snake);
+                Field_Update(field);
                 //quick hack
                 if(snake->health == 0){
                     game_state = GAME_OVER;
@@ -269,6 +271,7 @@ int XMAIN(){
 
                     eventLogicQuit(&e, &quit);
                     eventLogicKeyPrint(&e);
+                    eventLogicGamestate(&e, &game_state, field, snake);
                 }
 
                 SDL_RenderSetViewport(gRenderer, &board_view_port);
