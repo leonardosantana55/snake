@@ -139,17 +139,11 @@ void Field_Update(Field *field){
 }
 
 
-Snake* Snake_Init(Field *field){
+void Snake_Start(Snake* snake){
 
-    Snake *snake = (Snake *)malloc(sizeof(Field));
-    if(snake == NULL){
-        return NULL;
-    }
-
-    //init basic snakes properties
     snake->size = 3;
     // its the field size - the 4 outside walls - 1
-    snake->max_size = ((field->size_x * field->size_y) - (4 * field->size_x)) - 1;
+    snake->max_size = ((snake->field->size_x * snake->field->size_y) - (4 * snake->field->size_x)) - 1;
     snake->speed = 5.0;
     snake->speed_control_factor = 7.0;
     snake->speed_control = snake->speed_control_factor;
@@ -157,10 +151,10 @@ Snake* Snake_Init(Field *field){
     snake->motion_direction = RIGHT;    // the starting moving direction
     snake->score = 0;
 
-    snake->tile_x = field->tiles[field->size_x/2][field->size_x/2].x;    // the position of the snake depends on the coordinates of the field tiles
-    snake->tile_y = field->tiles[field->size_y/2][field->size_y/2].y;
-    snake->tile_w = field->tile_w;
-    snake->tile_h = field->tile_h;
+    snake->tile_x = snake->field->tiles[snake->field->size_x/2][snake->field->size_x/2].x;    // the position of the snake depends on the coordinates of the field tiles
+    snake->tile_y = snake->field->tiles[snake->field->size_y/2][snake->field->size_y/2].y;
+    snake->tile_w = snake->field->tile_w;
+    snake->tile_h = snake->field->tile_h;
 
     //init the position of each tile of the snake
     for(int i=0; i<snake->size; i++){
@@ -171,6 +165,41 @@ Snake* Snake_Init(Field *field){
         snake->tiles[i].h = snake->tile_h;
 
     }
+}
+
+
+Snake* Snake_Init(Field *field){
+
+    Snake *snake = (Snake *)malloc(sizeof(Field));
+    if(snake == NULL){
+        return NULL;
+    }
+
+//    //init basic snakes properties
+//    snake->size = 3;
+//    // its the field size - the 4 outside walls - 1
+//    snake->max_size = ((field->size_x * field->size_y) - (4 * field->size_x)) - 1;
+//    snake->speed = 5.0;
+//    snake->speed_control_factor = 7.0;
+//    snake->speed_control = snake->speed_control_factor;
+//    snake->health = 1;
+//    snake->motion_direction = RIGHT;    // the starting moving direction
+//    snake->score = 0;
+//
+//    snake->tile_x = field->tiles[field->size_x/2][field->size_x/2].x;    // the position of the snake depends on the coordinates of the field tiles
+//    snake->tile_y = field->tiles[field->size_y/2][field->size_y/2].y;
+//    snake->tile_w = field->tile_w;
+//    snake->tile_h = field->tile_h;
+//
+//    //init the position of each tile of the snake
+//    for(int i=0; i<snake->size; i++){
+//
+//        snake->tiles[i].x = snake->tile_x - (snake->tile_w * i);
+//        snake->tiles[i].y = snake->tile_y;
+//        snake->tiles[i].w = snake->tile_w;
+//        snake->tiles[i].h = snake->tile_h;
+//
+//    }
     
     //make comunication possible betwheen objects
     //the snake being initiated tells its address to the field
@@ -184,6 +213,8 @@ Snake* Snake_Init(Field *field){
         }
 
     }
+
+    Snake_Start(snake);
 
     return snake;
 }

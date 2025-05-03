@@ -91,6 +91,7 @@ void Field_Update(Field *field);
 
 Snake* Snake_Init(Field *field);
 void Snake_Move(Snake *snake);
+void Snake_Start(Snake* snake);
 
 Wall* Wall_Init(Field *field, int size, int start_x, int start_y, int orientation);
 
