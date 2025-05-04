@@ -219,11 +219,49 @@ Snake* Snake_Init(Field *field){
     return snake;
 }
 
+void Snake_ChangeDirection(Snake* snake, int direction){
 
-void Snake_Move(Snake *snake){
+        switch (direction){
+
+            case RIGHT:
+                if(snake->motion_direction != LEFT){
+
+                    snake->motion_direction = RIGHT;
+                }
+                break;
+
+            case DOWN:
+                if(snake->motion_direction != UP){
+
+                    snake->motion_direction = DOWN;
+                }
+                break;
+
+            case LEFT:
+                if(snake->motion_direction != RIGHT){
+
+                    snake->motion_direction = LEFT;
+                }
+                break;
+
+            case UP:
+                if(snake->motion_direction != DOWN){
+                    snake->motion_direction = UP;
+                }
+                break;
+
+            default:
+                break;
+    }
+}
+
+
+void Snake_Move(Snake *snake, int direction){
     //move the head of the snake and copy the previous tile to the old head position and so on
 
     if (snake->speed_control < snake->speed){
+
+        Snake_ChangeDirection(snake, direction);
 
         int colision = colisionDetection(snake->field, snake->tiles[0].x, snake->tiles[0].y, snake->motion_direction);
 

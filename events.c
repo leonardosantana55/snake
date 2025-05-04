@@ -28,37 +28,29 @@ void eventLogicGamestate(SDL_Event* e, int* game_state, Field* field, Snake* sna
 
 
 
-void eventLogicMoveSnake(SDL_Event* e, Snake* snake){
+int eventLogicMoveSnake(SDL_Event* e){
+
+    int direction = NONE;
     if(e->type == SDL_KEYDOWN){
 
         switch (e->key.keysym.sym){
 
             case SDLK_RIGHT:
-                if(snake->motion_direction != LEFT){
-
-                    snake->motion_direction = RIGHT;
-                }
+                direction = RIGHT;
                 break;
 
             case SDLK_DOWN:
-                if(snake->motion_direction != UP){
-
-                    snake->motion_direction = DOWN;
-                }
+                direction = DOWN;
                 break;
 
             case SDLK_LEFT:
-                if(snake->motion_direction != RIGHT){
-
-                    snake->motion_direction = LEFT;
-                }
+                direction = LEFT;
                 break;
 
             case SDLK_UP:
-                if(snake->motion_direction != DOWN){
-                    snake->motion_direction = UP;
-                }
+                direction = UP;
                 break;
         }
     }
+    return direction;
 }

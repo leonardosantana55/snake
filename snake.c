@@ -222,6 +222,7 @@ int XMAIN(){
     int game_state = GAME_START;
     char fps_string[16];
     char score_string[32];
+    int direction = 0;
 
     while(!quit){
 
@@ -238,14 +239,14 @@ int XMAIN(){
                 // event logic loop
                 while(SDL_PollEvent(&e)){
 
-                    eventLogicMoveSnake(&e, snake);
+                    direction = eventLogicMoveSnake(&e);
                     eventLogicQuit(&e, &quit);
                     eventLogicKeyPrint(&e);
                 }
 
                 //game logic
                 Food_Spawn(food);
-                Snake_Move(snake);
+                Snake_Move(snake, direction);
                 Field_Update(field);
                 //quick hack
                 if(snake->health == 0){
