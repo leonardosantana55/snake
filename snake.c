@@ -314,6 +314,14 @@ int XMAIN(){
 //refactor SDL functions, init destroy, loadimg etc
 //game over if snake colides with snakes body
 
+//SDL STATIC LINK
+//I've made a discovery not so long ago, that the SDL library used for game
+//development has actually built-in support for static linking. Their official
+//releases section only has the dynamic versions precompiled and every tutorial I
+//watched uses them, even though the static version is so much easier. You only
+//have to turn on and off two flags during the configure phase and everything else
+//is done automatically by the build system.
+
 
 //        if(prin){
 //
