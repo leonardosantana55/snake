@@ -97,9 +97,19 @@ bool initSDL(){
     }
 
     //Initialize SDL_ttf
-    if( TTF_Init() == -1 )
-    {
+    if( TTF_Init() == -1 ){
         printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+        success = false;
+    }
+
+    //Initialize SDL_mix
+    if( Mix_Init(MIX_INIT_MP3) == -1 ){
+        printf( "SDL_Mix could not initialize! SDL_Mix Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+
+    if( Mix_OpenAudio(48000, AUDIO_F32SYS, 2, 2048) == -1 ){
+        printf( "Mix_OpenAudio could not initialize. Mix_OpenAudio Error: %s\n", Mix_GetError() );
         success = false;
     }
 
@@ -186,6 +196,7 @@ int XMAIN(){
     initSDL();
     SDL_Event e;
     TTF_Font* font = TTF_OpenFont("assets/font/poxel/poxel-font.ttf", 24);
+    Mix_Music* music = Mix_LoadMUS("assets/audio/music/compor sines_v5.mp3");
     srand(time(NULL));
 
     //set viewports
@@ -223,6 +234,7 @@ int XMAIN(){
     char fps_string[16];
     char score_string[32];
     int direction = 0;
+    Mix_PlayMusic(music, 1);
 
     while(!quit){
 
