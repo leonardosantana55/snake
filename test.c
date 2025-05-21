@@ -32,6 +32,12 @@ int main(){
     LinkedList_Remove(i_list, NULL, &data);
 
     LinkedList_Print(i_list, 'i');
+
+    do {
+        printf("help");
+        a++;
+
+    } while( a != 3);
 //    printf("%d\n", i_list->size);
 
 //    vec3d* vec1 = (vec3d *)malloc(sizeof(vec3d));
