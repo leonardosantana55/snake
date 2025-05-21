@@ -1,5 +1,5 @@
-#ifndef MY_LIST
-#define MYLIST
+#ifndef LINKEDLIST
+#define LINKEDLIST
 
 
 typedef struct Node_{
@@ -21,12 +21,14 @@ typedef struct LinkedList_{
                                Public interface
 ******************************************************************************/
 
-LinkedList* LinkedList_Init(LinkedList *list){
+LinkedList* LinkedList_Init(void);
 
 void LinkedList_Destroy(LinkedList *list);
 
 int LinkedList_Insert(LinkedList *list, Node *node, const void *data);
 
 int LinkedList_Remove(LinkedList *list, Node *node, void **data);
+
+void LinkedList_Print(LinkedList* list, char datatype);
 
 #endif

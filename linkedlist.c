@@ -17,11 +17,12 @@
     LinkedList_Init(mylist);
 
 ******************************************************************************/
-LinkedList* LinkedList_Init(LinkedList *list){
+LinkedList* LinkedList_Init(void){
 
     LinkedList *list = (LinkedList *)malloc(sizeof(LinkedList));
-    if(mylist == NULL){
-        return -1;
+    if(list == NULL){
+        return NULL;
+    }
 
     list->size = 0;
     list->tail = NULL;
@@ -58,8 +59,9 @@ int LinkedList_Insert(LinkedList *list, Node *node, const void *data){
 
     //insertion at the head
     if (node == NULL){
+
+        //handle insert when list is empty
         if (list->size == 0){
-            //handle insert when list is empty
             list->tail = new_node;
         }
 
@@ -110,8 +112,13 @@ int LinkedList_Remove(LinkedList *list, Node *node, void **data){
     if (node == NULL){
         //remove from the head
 
+        //this is the data being removed
         *data = list->head->data;
+
+        //this in the node being removed
         old_node = list->head;
+
+        //now head is the previous one
         list->head = list->head->next;
 
         if (list->size == 1){
@@ -168,3 +175,78 @@ void LinkedList_Destroy(LinkedList *list){
 
     memset(list, 0, sizeof(LinkedList));
 }
+
+
+void LinkedList_Print(LinkedList* list, char datatype){
+
+    if (list == NULL || list->head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+
+    Node* temp = list->head;
+
+    printf("[");
+
+    switch(datatype){
+
+        case 'i':
+
+            for(int i=list->size; i>0; i--){
+                printf("%d", *(int*)(temp->data));
+                if(i != 1){
+                    printf(", ");
+                }
+                temp = temp->next;
+            }
+            break;
+
+        case 'f':
+        case 'd':
+
+            for(int i=list->size; i>0; i--){
+                printf("%f", *(double*)(temp->data));
+                if(i != 1){
+                    printf(", ");
+                }
+                temp = temp->next;
+            }
+            break;
+
+        case 's':
+
+            for(int i=list->size; i>0; i--){
+                printf("%s", (char*)(temp->data));
+                if(i != 1){
+                    printf(", ");
+                }
+                temp = temp->next;
+            }
+            break;
+
+        default:
+
+            for(int i=list->size; i>0; i--){
+                printf("%p", temp->data);
+                if(i != 1){
+                    printf(", ");
+                }
+                temp = temp->next;
+            }
+    }
+
+    printf("]\n");
+}
+
+//this is how to add and dereference a value on the linkedlist
+//vec3d* vec1 = (vec3d *)malloc(sizeof(vec3d));
+//vec1->x = 5.0;
+//vec1->y = 5.0;
+//vec1->z = 5.0;
+//
+//LinkedList* mylist = LinkedList_Init();
+//
+//LinkedList_Insert(mylist, NULL, (void*)vec1);
+//printf("%f", ((vec3d*)mylist->head->data)->x);
+
+
