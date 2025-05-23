@@ -22,22 +22,29 @@ int main(){
 
     LinkedList_Print(i_list, 'i');
 //    printf("%d\n", i_list->size);
+//    printf("%dtail: \n", *(int*)i_list->tail->data);
+
+//    void* data;
+//    LinkedList_Remove(i_list, NULL, &data);
+//    LinkedList_Print(i_list, 'i');
+//
+//    LinkedList_Remove(i_list, NULL, &data);
+//    LinkedList_Print(i_list, 'i');
+//
+//    LinkedList_Remove(i_list, NULL, &data);
+//    LinkedList_Print(i_list, 'i');
 
     void* data;
-    LinkedList_Remove(i_list, NULL, &data);
-
-    LinkedList_Print(i_list, 'i');
-//    printf("%d\n", i_list->size);
-
-    LinkedList_Remove(i_list, NULL, &data);
-
+    LinkedList_Remove(i_list, i_list->tail, &data);
     LinkedList_Print(i_list, 'i');
 
-    do {
-        printf("help");
-        a++;
+    LinkedList_Remove(i_list, i_list->tail, &data);
+    LinkedList_Print(i_list, 'i');
 
-    } while( a != 3);
+    LinkedList_Remove(i_list, i_list->tail, &data);
+    LinkedList_Print(i_list, 'i');
+
+
 //    printf("%d\n", i_list->size);
 
 //    vec3d* vec1 = (vec3d *)malloc(sizeof(vec3d));

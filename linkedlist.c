@@ -102,7 +102,8 @@ removed and no data is retrieved
 ******************************************************************************/
 int LinkedList_Remove(LinkedList *list, Node *node, void **data){
 
-    Node *old_node;
+    Node* old_node;
+    Node* temp = list->head;
 
     // removal from empty list is not allowed
     if (list->size == 0){
@@ -122,7 +123,8 @@ int LinkedList_Remove(LinkedList *list, Node *node, void **data){
         list->head = list->head->next;
 
         if (list->size == 1){
-            list->tail = NULL;
+//            list->tail = NULL; // maybe i created a bug here
+            list->tail = list->head;
         }
 
     }
@@ -130,24 +132,36 @@ int LinkedList_Remove(LinkedList *list, Node *node, void **data){
     else{
         //remove specified node
 
-        if (node->next == NULL){
-            //to remove last item pass NULL instead
-            return -1;
-        }
+        if (node->next == NULL){        // if is the last node
 
-        *data = node->next->data;
-        old_node = node->next;
-        node->next = node->next->next;
+            for(int i=list->size; i>2; i--){
+                temp = temp->next;
+            }
 
-        if (node->next == NULL){
+            *data = node->data;
+            temp->next = NULL;
             list->tail = node;
+
+//            return -1;
+        }
+        else{                           // if its in the middle
+
+            *data = node->next->data;
+            old_node = node->next;
+            node->next = node->next->next;
+
+            if (node->next == NULL){
+                list->tail = node;
+            }
         }
 
     }
 
     free(old_node);
-
     list->size--;
+    if (list->size == 0){
+        list->head = NULL;
+    }
 
     return 0;
 }
