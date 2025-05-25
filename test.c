@@ -10,15 +10,13 @@ typedef struct vec3d_{
  
 int main(){
 
-    int a = 1;
-    int b = 2;
-    int c = 3;
-
     LinkedList* i_list = LinkedList_Init();
 
-    LinkedList_Insert(i_list, NULL, &a);
-    LinkedList_Insert(i_list, NULL, &b);
-    LinkedList_Insert(i_list, NULL, &c);
+    for(int i = 0; i<15; i++){
+        int* data = malloc(sizeof(int));
+        *data = i;
+        LinkedList_Insert(i_list, NULL, data);
+    }
 
     LinkedList_Print(i_list, 'i');
 //    printf("%d\n", i_list->size);
@@ -34,15 +32,34 @@ int main(){
 //    LinkedList_Remove(i_list, NULL, &data);
 //    LinkedList_Print(i_list, 'i');
 
-    void* data;
-    LinkedList_Remove(i_list, i_list->tail, &data);
+    void* removed;
+    
+    removed = LinkedList_Remove(i_list, i_list->tail);
+    LinkedList_Print(i_list, 'i');
+    printf("rem: %d\n", *(int*)removed);
+
+    removed = LinkedList_Remove(i_list, i_list->tail);
+    LinkedList_Print(i_list, 'i');
+    printf("rem: %d\n", *(int*)removed);
+
+    removed = LinkedList_Remove(i_list, i_list->tail);
+    LinkedList_Print(i_list, 'i');
+    printf("rem: %d\n", *(int*)removed);
+
+    LinkedList_Destroy(i_list);
     LinkedList_Print(i_list, 'i');
 
-    LinkedList_Remove(i_list, i_list->tail, &data);
-    LinkedList_Print(i_list, 'i');
-
-    LinkedList_Remove(i_list, i_list->tail, &data);
-    LinkedList_Print(i_list, 'i');
+//    removed = LinkedList_Remove(i_list, i_list->head->next);
+//    LinkedList_Print(i_list, 'i');
+//    printf("rem: %d\n", *(int*)removed);
+//
+//    removed = LinkedList_Remove(i_list, i_list->head->next);
+//    LinkedList_Print(i_list, 'i');
+//    printf("rem: %d\n", *(int*)removed);
+//
+//    removed = LinkedList_Remove(i_list, i_list->head->next);
+//    LinkedList_Print(i_list, 'i');
+//    printf("rem: %d\n", *(int*)removed);
 
 
 //    printf("%d\n", i_list->size);

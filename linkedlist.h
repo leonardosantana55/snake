@@ -27,7 +27,7 @@ void LinkedList_Destroy(LinkedList *list);
 
 int LinkedList_Insert(LinkedList *list, Node *node, const void *data);
 
-int LinkedList_Remove(LinkedList *list, Node *node, void **data);
+void* LinkedList_Remove(LinkedList *list, Node *node);
 
 void LinkedList_Print(LinkedList* list, char datatype);
 

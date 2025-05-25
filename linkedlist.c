@@ -35,15 +35,20 @@ LinkedList* LinkedList_Init(void){
 /******************************************************************************
 *Function Description:
 
-Insert any data type in the list
-To insert at the head pass NULL as the *node argument
-To insert anywhere do it like this:
+Insert any data type in the list:
+To insert in the middle you must inform the addres of the node rigth before
+the desired location
 
-    int index = 0;
-    Node *index_adr = NULL;
-    for(int i=0; i<index; i++){
-        index_adr = mylist->head->next;
+To insert at the head pass NULL as the *node argument
+
+To insert as if by value you have to alocate memory:
+
+    for(int i = 0; i<15; i++){
+        int* data = malloc(sizeof(int));
+        *data = i;
+        LinkedList_Insert(i_list, NULL, data);
     }
+
 
 ******************************************************************************/
 int LinkedList_Insert(LinkedList *list, Node *node, const void *data){
@@ -100,21 +105,22 @@ if the last two arguments are passed as NULL the last item is
 removed and no data is retrieved
 
 ******************************************************************************/
-int LinkedList_Remove(LinkedList *list, Node *node, void **data){
+void* LinkedList_Remove(LinkedList *list, Node *node){
 
     Node* old_node;
     Node* temp = list->head;
+    void* removed;
 
     // removal from empty list is not allowed
     if (list->size == 0){
-        return -1;
+        return NULL;
     }
 
     if (node == NULL){
         //remove from the head
 
         //this is the data being removed
-        *data = list->head->data;
+        removed = list->head->data;
 
         //this in the node being removed
         old_node = list->head;
@@ -138,15 +144,15 @@ int LinkedList_Remove(LinkedList *list, Node *node, void **data){
                 temp = temp->next;
             }
 
-            *data = node->data;
+            removed = list->tail->data;
             temp->next = NULL;
-            list->tail = node;
+            list->tail = temp;
 
 //            return -1;
         }
         else{                           // if its in the middle
 
-            *data = node->next->data;
+            removed = node->next->data;
             old_node = node->next;
             node->next = node->next->next;
 
@@ -163,7 +169,7 @@ int LinkedList_Remove(LinkedList *list, Node *node, void **data){
         list->head = NULL;
     }
 
-    return 0;
+    return removed;
 }
 
 
@@ -175,12 +181,10 @@ Simply pass a linked list and voila :)
 ******************************************************************************/
 void LinkedList_Destroy(LinkedList *list){
 
-    void *removed;
-
     int count = 0;
     while(list->size > 0){
 
-        LinkedList_Remove(list, NULL, (void **)&removed);
+        LinkedList_Remove(list, NULL);
         count++;
 
     }
