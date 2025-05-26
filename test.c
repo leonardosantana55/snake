@@ -12,7 +12,7 @@ int main(){
 
     LinkedList* i_list = LinkedList_Init();
 
-    for(int i = 0; i<15; i++){
+    for(int i = 0; i<30; i++){
         int* data = malloc(sizeof(int));
         *data = i;
         LinkedList_Insert(i_list, NULL, data);
@@ -34,17 +34,19 @@ int main(){
 
     void* removed;
     
-    removed = LinkedList_Remove(i_list, i_list->tail);
-    LinkedList_Print(i_list, 'i');
-    printf("rem: %d\n", *(int*)removed);
+    for(int i=0; i<15; i++){
 
-    removed = LinkedList_Remove(i_list, i_list->tail);
-    LinkedList_Print(i_list, 'i');
-    printf("rem: %d\n", *(int*)removed);
+        removed = LinkedList_Remove(i_list, i_list->tail);
+        LinkedList_Print(i_list, 'i');
+        printf("rem: %d\n", *(int*)removed);
+    }
 
-    removed = LinkedList_Remove(i_list, i_list->tail);
-    LinkedList_Print(i_list, 'i');
-    printf("rem: %d\n", *(int*)removed);
+    for(int i=0; i<15; i++){
+
+        removed = LinkedList_Remove(i_list, NULL);
+        LinkedList_Print(i_list, 'i');
+        printf("rem: %d\n", *(int*)removed);
+    }
 
     LinkedList_Destroy(i_list);
     LinkedList_Print(i_list, 'i');
