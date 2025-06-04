@@ -8,18 +8,18 @@
 /******************************************************************************
 *Function Description:
 
-    inits the variable of type LinkedList like this:
+    inits the variable of type List like this:
 
-    LinkedList *mylist = (LinkedList *)malloc(sizeof(LinkedList));
+    List *mylist = (List *)malloc(sizeof(List));
     if(mylist == NULL){
         return -1;
 
-    LinkedList_Init(mylist);
+    List_Init(mylist);
 
 ******************************************************************************/
-LinkedList* LinkedList_Init(void){
+List* List_Init(void){
 
-    LinkedList *list = (LinkedList *)malloc(sizeof(LinkedList));
+    List *list = (List *)malloc(sizeof(List));
     if(list == NULL){
         return NULL;
     }
@@ -46,12 +46,12 @@ To insert as if by value you have to alocate memory:
     for(int i = 0; i<15; i++){
         int* data = malloc(sizeof(int));
         *data = i;
-        LinkedList_Insert(i_list, NULL, data);
+        List_Insert(i_list, NULL, data);
     }
 
 
 ******************************************************************************/
-int LinkedList_Insert(LinkedList *list, Node *node, const void *data){
+int List_Insert(List *list, Node *node, const void *data){
 
     Node *new_node;
     new_node = (Node *)malloc(sizeof(Node));
@@ -98,14 +98,14 @@ The **data argument is where the value removed is pointed to
 To get it its necessary to know which data type the list holds:
 
     float *removed = (float *)malloc(sizeof(float));
-    LinkedList_Remove(mylist, NULL, (void **)&removed);
+    List_Remove(mylist, NULL, (void **)&removed);
     printf("removed: %.2f\n", *removed);
 
 if the last two arguments are passed as NULL the last item is
 removed and no data is retrieved
 
 ******************************************************************************/
-void* LinkedList_Remove(LinkedList *list, Node *node){
+void* List_Remove(List *list, Node *node){
 
     Node* old_node;
     Node* temp = list->head;
@@ -145,10 +145,10 @@ void* LinkedList_Remove(LinkedList *list, Node *node){
             }
 
             removed = list->tail->data;
+            old_node = list->tail;
             temp->next = NULL;
             list->tail = temp;
 
-//            return -1;
         }
         else{                           // if its in the middle
 
@@ -160,13 +160,13 @@ void* LinkedList_Remove(LinkedList *list, Node *node){
                 list->tail = node;
             }
         }
-
     }
 
     free(old_node);
     list->size--;
     if (list->size == 0){
         list->head = NULL;
+        list->tail = NULL;
     }
 
     return removed;
@@ -179,23 +179,23 @@ void* LinkedList_Remove(LinkedList *list, Node *node){
 Simply pass a linked list and voila :)
 
 ******************************************************************************/
-void LinkedList_Destroy(LinkedList *list){
+void List_Destroy(List *list){
 
     int count = 0;
     while(list->size > 0){
 
-        LinkedList_Remove(list, NULL);
+        List_Remove(list, NULL);
         count++;
 
     }
 
     printf("%d items removed, list destroyed\n", count);
 
-    memset(list, 0, sizeof(LinkedList));
+    memset(list, 0, sizeof(List));
 }
 
 
-void LinkedList_Print(LinkedList* list, char datatype){
+void List_Print(List* list, char datatype){
 
     if (list == NULL || list->head == NULL) {
         printf("List is empty.\n");
@@ -262,9 +262,9 @@ void LinkedList_Print(LinkedList* list, char datatype){
 //vec1->y = 5.0;
 //vec1->z = 5.0;
 //
-//LinkedList* mylist = LinkedList_Init();
+//List* mylist = List_Init();
 //
-//LinkedList_Insert(mylist, NULL, (void*)vec1);
+//List_Insert(mylist, NULL, (void*)vec1);
 //printf("%f", ((vec3d*)mylist->head->data)->x);
 
 

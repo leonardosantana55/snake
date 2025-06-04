@@ -9,26 +9,26 @@ typedef struct Node_{
 
 } Node;
 
-typedef struct LinkedList_{
+typedef struct List_{
 
     int size;
     Node *tail;
     Node *head; // the head is what points to the body!!!
 
-} LinkedList;
+} List;
 
 /******************************************************************************
                                Public interface
 ******************************************************************************/
 
-LinkedList* LinkedList_Init(void);
+List* List_Init(void);
 
-void LinkedList_Destroy(LinkedList *list);
+void List_Destroy(List *list);
 
-int LinkedList_Insert(LinkedList *list, Node *node, const void *data);
+int List_Insert(List *list, Node *node, const void *data);
 
-void* LinkedList_Remove(LinkedList *list, Node *node);
+void* List_Remove(List *list, Node *node);
 
-void LinkedList_Print(LinkedList* list, char datatype);
+void List_Print(List* list, char datatype);
 
 #endif
