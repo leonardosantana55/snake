@@ -35,6 +35,7 @@
 #include "events.h"
 #include "render.h"
 #include "game_state.h"
+#include "linkedlist.h"
 
 // its a breeze building this program on linux or windows 
 #ifdef _WIN32
@@ -234,6 +235,7 @@ int XMAIN(){
     char fps_string[16];
     char score_string[32];
     int direction = 0;
+    List* dir_queue = List_Init();
     Mix_PlayMusic(music, 1);
 
     while(!quit){
@@ -252,9 +254,20 @@ int XMAIN(){
                 while(SDL_PollEvent(&e)){
 
                     direction = eventLogicMoveSnake(&e);
+                    int* dir = (int*)malloc(sizeof(int));
+                    *dir = direction;
+                    List_Insert(dir_queue, NULL, (void*)dir);
+
                     eventLogicQuit(&e, &quit);
                     eventLogicKeyPrint(&e);
                 }
+
+                List_Print(dir_queue, 'i');
+
+                while(dir_queue->size > 0){
+                    List_Remove(dir_queue, dir_queue->tail);
+                }
+
 
                 //game logic
                 Food_Spawn(food);
@@ -302,7 +315,7 @@ int XMAIN(){
         //Update screen
         SDL_RenderPresent( gRenderer );
 
-        SDL_Log("speed: %0.2f, food x,y: %d, %d\n", snake->speed, food->tile.x, food->tile.y);
+//        SDL_Log("speed: %0.2f, food x,y: %d, %d\n", snake->speed, food->tile.x, food->tile.y);
 
 
         // control frame rate
@@ -311,6 +324,7 @@ int XMAIN(){
     }
 
     closeSDL();
+    List_Destroy(dir_queue);
     return 0;
 }
 

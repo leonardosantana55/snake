@@ -258,6 +258,13 @@ void Snake_ChangeDirection(Snake* snake, int direction){
 
 void Snake_Move(Snake *snake, int direction){
     //move the head of the snake and copy the previous tile to the old head position and so on
+    //
+    //prototype for list implementation
+    //int direction;
+    //if(list->tail != NULL) do
+    //direction = *(int*)list->tail->data;
+    //List_Remove(list, list->tail);
+    //else direction = 0;
 
     if (snake->speed_control < snake->speed){
 
