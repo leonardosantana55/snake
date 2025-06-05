@@ -254,24 +254,22 @@ int XMAIN(){
                 while(SDL_PollEvent(&e)){
 
                     direction = eventLogicMoveSnake(&e);
-                    int* dir = (int*)malloc(sizeof(int));
-                    *dir = direction;
-                    List_Insert(dir_queue, NULL, (void*)dir);
+
+                    // prevents filling the list with junk zeros
+                    if(direction != 0){
+
+                        int* dir = (int*)malloc(sizeof(int));
+                        *dir = direction;
+                        List_Insert(dir_queue, NULL, (void*)dir);
+                    }
 
                     eventLogicQuit(&e, &quit);
                     eventLogicKeyPrint(&e);
                 }
 
-                List_Print(dir_queue, 'i');
-
-                while(dir_queue->size > 0){
-                    List_Remove(dir_queue, dir_queue->tail);
-                }
-
-
                 //game logic
                 Food_Spawn(food);
-                Snake_Move(snake, direction);
+                Snake_Move(snake, dir_queue);
                 Field_Update(field);
                 //quick hack
                 if(snake->health == 0){

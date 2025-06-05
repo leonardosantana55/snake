@@ -7,6 +7,7 @@
 
 #include <SDL2/SDL.h>
 #include "utils.h"
+#include "linkedlist.h"
 
 enum Direction {NONE, RIGHT, DOWN, LEFT, UP};
 
@@ -91,7 +92,7 @@ void Field_Update(Field *field);
 
 Snake* Snake_Init(Field *field);
 void Snake_ChangeDirection(Snake* snake, int direction);
-void Snake_Move(Snake *snake, int direction);
+void Snake_Move(Snake *snake, List* dir_queue);
 void Snake_Start(Snake* snake);
 
 Wall* Wall_Init(Field *field, int size, int start_x, int start_y, int orientation);

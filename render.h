@@ -5,6 +5,12 @@
 #include <SDL2/SDL_ttf.h>
 #include "enteties.h"
 
+enum Colors {
+    C1 = 255/255,
+    C2 = 255/8,
+    C3 = 255/4,
+    C4 = 255/2
+};
 
 void renderField(Field *field, SDL_Renderer *renderer);
 
